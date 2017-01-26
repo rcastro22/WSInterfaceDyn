@@ -1,0 +1,1440 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.galileo.edu" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://www.galileo.edu" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.galileo.edu">
+      <s:element name="ObtenerGeneral">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Aplicacion" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="categoria" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ListaEtiquetas" type="tns:ArrayOfEtiquetas" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfEtiquetas">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Etiquetas" nillable="true" type="tns:Etiquetas" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Etiquetas">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Etiqueta" type="s:short" />
+          <s:element minOccurs="0" maxOccurs="1" name="Valor" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ObtenerGeneralResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerGeneralResult" type="tns:Carchivo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Carchivo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Contenido" type="s:base64Binary" />
+          <s:element minOccurs="0" maxOccurs="1" name="MIME" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Nombre" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Obtener">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Aplicacion" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="categoria" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ListaEtiquetas" type="tns:ArrayOfEtiquetas" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerResult" type="tns:Carchivo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Obtenerxarchivo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="idarchivo" type="s:decimal" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerxarchivoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerxarchivoResult" type="tns:Carchivo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GuardarConEtiquetas">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Aplicacion" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="categoria" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="NombreArchivo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tipoContenido" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="contenido" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="usuario" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ListaEtiquetas" type="tns:ArrayOfEtiquetas" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GuardarConEtiquetasResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GuardarGeneral">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Aplicacion" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="categoria" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="NombreArchivo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tipoContenido" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="contenido" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="usuario" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nosol" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GuardarGeneralResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GuardarGeneralF">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Aplicacion" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="categoria" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="NombreArchivo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tipoContenido" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="contenido" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="usuario" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nosol" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GuardarGeneralFResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GuardarGeneralFResult" type="s:decimal" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Guardar">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Aplicacion" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="categoria" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="NombreArchivo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tipoContenido" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="contenido" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="usuario" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GuardarResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GuardarF">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Aplicacion" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="categoria" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="NombreArchivo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tipoContenido" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="contenido" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="usuario" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GuardarFResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GuardarFResult" type="s:decimal" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerCarrerasxCarnet">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="carnet" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerCarrerasxCarnetResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerCarrerasxCarnetResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtieneEtiquetasxArhivo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="idarchivo" type="s:decimal" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtieneEtiquetasxArhivoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtieneEtiquetasxArhivoResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GuardarEtiquetas">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="idarchivo" type="s:decimal" />
+            <s:element minOccurs="0" maxOccurs="1" name="Aplicacion" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="categoria" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ListaEtiquetas" type="tns:ArrayOfEtiquetas" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GuardarEtiquetasResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="RemoverEtiquetas">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="idarchivo" type="s:decimal" />
+            <s:element minOccurs="0" maxOccurs="1" name="Aplicacion" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="categoria" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ListaEtiquetas" type="tns:ArrayOfEtiquetas" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoverEtiquetasResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="ObtenerApps">
+        <s:complexType />
+      </s:element>
+      <s:element name="ObtenerAppsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerAppsResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerCat">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Aplicacion" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerCatResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerCatResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerEtiquetas">
+        <s:complexType />
+      </s:element>
+      <s:element name="ObtenerEtiquetasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerEtiquetasResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerArchivos">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Aplicacion" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="categoria" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ListaEtiquetas" type="tns:ArrayOfEtiquetas" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerArchivosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerArchivosResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Dardebaja">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="idarchivo" type="s:decimal" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DardebajaResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="DardebajaSol">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="idarchivo" type="s:decimal" />
+            <s:element minOccurs="0" maxOccurs="1" name="nosol" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DardebajaSolResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="Automatizar">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="idarchivo" type="s:decimal" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AutomatizarResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="validar">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="usuario" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="validarResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="validarResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="obtenerTitulosxCarrera">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="carrera" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="titulo" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="obtenerTitulosxCarreraResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="obtenerTitulosxCarreraResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="obtenerEntidadxCarrera">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="carrera" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="obtenerEntidadxCarreraResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="obtenerEntidadxCarreraResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="obtenerNombreAlumno">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="carnet" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="obtenerNombreAlumnoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="obtenerNombreAlumnoResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerNombreDocente">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="codpers" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerNombreDocenteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerNombreDocenteResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerRequisitosCarrera">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Carrera" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerRequisitosCarreraResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerRequisitosCarreraResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerRequisitosAdmision">
+        <s:complexType />
+      </s:element>
+      <s:element name="ObtenerRequisitosAdmisionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerRequisitosAdmisionResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerEmpleadoDynamics">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="emplid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerEmpleadoDynamicsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerEmpleadoDynamicsResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerFacultades">
+        <s:complexType />
+      </s:element>
+      <s:element name="ObtenerFacultadesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerFacultadesResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ViculosxUsuario">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="usuario" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ViculosxUsuarioResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ViculosxUsuarioResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SolicitudesSinTerminar">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="carrera" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="carnet" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="tramite" type="s:decimal" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SolicitudesSinTerminarResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SolicitudesSinTerminarResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ObtenerGeneralSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtenerGeneral" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerGeneralSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerGeneralResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerSoapIn">
+    <wsdl:part name="parameters" element="tns:Obtener" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerxarchivoSoapIn">
+    <wsdl:part name="parameters" element="tns:Obtenerxarchivo" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerxarchivoSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerxarchivoResponse" />
+  </wsdl:message>
+  <wsdl:message name="GuardarConEtiquetasSoapIn">
+    <wsdl:part name="parameters" element="tns:GuardarConEtiquetas" />
+  </wsdl:message>
+  <wsdl:message name="GuardarConEtiquetasSoapOut">
+    <wsdl:part name="parameters" element="tns:GuardarConEtiquetasResponse" />
+  </wsdl:message>
+  <wsdl:message name="GuardarGeneralSoapIn">
+    <wsdl:part name="parameters" element="tns:GuardarGeneral" />
+  </wsdl:message>
+  <wsdl:message name="GuardarGeneralSoapOut">
+    <wsdl:part name="parameters" element="tns:GuardarGeneralResponse" />
+  </wsdl:message>
+  <wsdl:message name="GuardarGeneralFSoapIn">
+    <wsdl:part name="parameters" element="tns:GuardarGeneralF" />
+  </wsdl:message>
+  <wsdl:message name="GuardarGeneralFSoapOut">
+    <wsdl:part name="parameters" element="tns:GuardarGeneralFResponse" />
+  </wsdl:message>
+  <wsdl:message name="GuardarSoapIn">
+    <wsdl:part name="parameters" element="tns:Guardar" />
+  </wsdl:message>
+  <wsdl:message name="GuardarSoapOut">
+    <wsdl:part name="parameters" element="tns:GuardarResponse" />
+  </wsdl:message>
+  <wsdl:message name="GuardarFSoapIn">
+    <wsdl:part name="parameters" element="tns:GuardarF" />
+  </wsdl:message>
+  <wsdl:message name="GuardarFSoapOut">
+    <wsdl:part name="parameters" element="tns:GuardarFResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerCarrerasxCarnetSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtenerCarrerasxCarnet" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerCarrerasxCarnetSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerCarrerasxCarnetResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtieneEtiquetasxArhivoSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtieneEtiquetasxArhivo" />
+  </wsdl:message>
+  <wsdl:message name="ObtieneEtiquetasxArhivoSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtieneEtiquetasxArhivoResponse" />
+  </wsdl:message>
+  <wsdl:message name="GuardarEtiquetasSoapIn">
+    <wsdl:part name="parameters" element="tns:GuardarEtiquetas" />
+  </wsdl:message>
+  <wsdl:message name="GuardarEtiquetasSoapOut">
+    <wsdl:part name="parameters" element="tns:GuardarEtiquetasResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoverEtiquetasSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoverEtiquetas" />
+  </wsdl:message>
+  <wsdl:message name="RemoverEtiquetasSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoverEtiquetasResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerAppsSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtenerApps" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerAppsSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerAppsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerCatSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtenerCat" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerCatSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerCatResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerEtiquetasSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtenerEtiquetas" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerEtiquetasSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerEtiquetasResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerArchivosSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtenerArchivos" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerArchivosSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerArchivosResponse" />
+  </wsdl:message>
+  <wsdl:message name="DardebajaSoapIn">
+    <wsdl:part name="parameters" element="tns:Dardebaja" />
+  </wsdl:message>
+  <wsdl:message name="DardebajaSoapOut">
+    <wsdl:part name="parameters" element="tns:DardebajaResponse" />
+  </wsdl:message>
+  <wsdl:message name="DardebajaSolSoapIn">
+    <wsdl:part name="parameters" element="tns:DardebajaSol" />
+  </wsdl:message>
+  <wsdl:message name="DardebajaSolSoapOut">
+    <wsdl:part name="parameters" element="tns:DardebajaSolResponse" />
+  </wsdl:message>
+  <wsdl:message name="AutomatizarSoapIn">
+    <wsdl:part name="parameters" element="tns:Automatizar" />
+  </wsdl:message>
+  <wsdl:message name="AutomatizarSoapOut">
+    <wsdl:part name="parameters" element="tns:AutomatizarResponse" />
+  </wsdl:message>
+  <wsdl:message name="validarSoapIn">
+    <wsdl:part name="parameters" element="tns:validar" />
+  </wsdl:message>
+  <wsdl:message name="validarSoapOut">
+    <wsdl:part name="parameters" element="tns:validarResponse" />
+  </wsdl:message>
+  <wsdl:message name="obtenerTitulosxCarreraSoapIn">
+    <wsdl:part name="parameters" element="tns:obtenerTitulosxCarrera" />
+  </wsdl:message>
+  <wsdl:message name="obtenerTitulosxCarreraSoapOut">
+    <wsdl:part name="parameters" element="tns:obtenerTitulosxCarreraResponse" />
+  </wsdl:message>
+  <wsdl:message name="obtenerEntidadxCarreraSoapIn">
+    <wsdl:part name="parameters" element="tns:obtenerEntidadxCarrera" />
+  </wsdl:message>
+  <wsdl:message name="obtenerEntidadxCarreraSoapOut">
+    <wsdl:part name="parameters" element="tns:obtenerEntidadxCarreraResponse" />
+  </wsdl:message>
+  <wsdl:message name="obtenerNombreAlumnoSoapIn">
+    <wsdl:part name="parameters" element="tns:obtenerNombreAlumno" />
+  </wsdl:message>
+  <wsdl:message name="obtenerNombreAlumnoSoapOut">
+    <wsdl:part name="parameters" element="tns:obtenerNombreAlumnoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerNombreDocenteSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtenerNombreDocente" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerNombreDocenteSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerNombreDocenteResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerRequisitosCarreraSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtenerRequisitosCarrera" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerRequisitosCarreraSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerRequisitosCarreraResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerRequisitosAdmisionSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtenerRequisitosAdmision" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerRequisitosAdmisionSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerRequisitosAdmisionResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerEmpleadoDynamicsSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtenerEmpleadoDynamics" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerEmpleadoDynamicsSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerEmpleadoDynamicsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerFacultadesSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtenerFacultades" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerFacultadesSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerFacultadesResponse" />
+  </wsdl:message>
+  <wsdl:message name="ViculosxUsuarioSoapIn">
+    <wsdl:part name="parameters" element="tns:ViculosxUsuario" />
+  </wsdl:message>
+  <wsdl:message name="ViculosxUsuarioSoapOut">
+    <wsdl:part name="parameters" element="tns:ViculosxUsuarioResponse" />
+  </wsdl:message>
+  <wsdl:message name="SolicitudesSinTerminarSoapIn">
+    <wsdl:part name="parameters" element="tns:SolicitudesSinTerminar" />
+  </wsdl:message>
+  <wsdl:message name="SolicitudesSinTerminarSoapOut">
+    <wsdl:part name="parameters" element="tns:SolicitudesSinTerminarResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ServiceSoap">
+    <wsdl:operation name="ObtenerGeneral">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtiene el documento</wsdl:documentation>
+      <wsdl:input message="tns:ObtenerGeneralSoapIn" />
+      <wsdl:output message="tns:ObtenerGeneralSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Obtener">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtiene el documento</wsdl:documentation>
+      <wsdl:input message="tns:ObtenerSoapIn" />
+      <wsdl:output message="tns:ObtenerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Obtenerxarchivo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtiene el documento</wsdl:documentation>
+      <wsdl:input message="tns:ObtenerxarchivoSoapIn" />
+      <wsdl:output message="tns:ObtenerxarchivoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GuardarConEtiquetas">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obsoleto usar GuardarConEtiquetas2</wsdl:documentation>
+      <wsdl:input message="tns:GuardarConEtiquetasSoapIn" />
+      <wsdl:output message="tns:GuardarConEtiquetasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GuardarGeneral">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Guarda documentos, Para solicitud de tramite</wsdl:documentation>
+      <wsdl:input message="tns:GuardarGeneralSoapIn" />
+      <wsdl:output message="tns:GuardarGeneralSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GuardarGeneralF">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Funcion Guarda documentos, Para solicitud de tramite, Devuelve Id de Archivo.</wsdl:documentation>
+      <wsdl:input message="tns:GuardarGeneralFSoapIn" />
+      <wsdl:output message="tns:GuardarGeneralFSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Guardar">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Guarda documentos, genera tag en base al nombre</wsdl:documentation>
+      <wsdl:input message="tns:GuardarSoapIn" />
+      <wsdl:output message="tns:GuardarSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GuardarF">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">`Funcion Guarda documentos, genera tag en base al nombre devuelve id archivo.</wsdl:documentation>
+      <wsdl:input message="tns:GuardarFSoapIn" />
+      <wsdl:output message="tns:GuardarFSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerCarrerasxCarnet">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtiene las Carreras x carnet</wsdl:documentation>
+      <wsdl:input message="tns:ObtenerCarrerasxCarnetSoapIn" />
+      <wsdl:output message="tns:ObtenerCarrerasxCarnetSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtieneEtiquetasxArhivo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtiene Etiquetas para un documento</wsdl:documentation>
+      <wsdl:input message="tns:ObtieneEtiquetasxArhivoSoapIn" />
+      <wsdl:output message="tns:ObtieneEtiquetasxArhivoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GuardarEtiquetas">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Guarda Etiquetas para un documento</wsdl:documentation>
+      <wsdl:input message="tns:GuardarEtiquetasSoapIn" />
+      <wsdl:output message="tns:GuardarEtiquetasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoverEtiquetas">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Guarda Etiquetas para un documento</wsdl:documentation>
+      <wsdl:input message="tns:RemoverEtiquetasSoapIn" />
+      <wsdl:output message="tns:RemoverEtiquetasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerApps">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtiene las aplicaciones</wsdl:documentation>
+      <wsdl:input message="tns:ObtenerAppsSoapIn" />
+      <wsdl:output message="tns:ObtenerAppsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerCat">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtiene las categorias</wsdl:documentation>
+      <wsdl:input message="tns:ObtenerCatSoapIn" />
+      <wsdl:output message="tns:ObtenerCatSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerEtiquetas">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtiene las Etiquetas</wsdl:documentation>
+      <wsdl:input message="tns:ObtenerEtiquetasSoapIn" />
+      <wsdl:output message="tns:ObtenerEtiquetasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerArchivos">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtiene archivos x etiquetas</wsdl:documentation>
+      <wsdl:input message="tns:ObtenerArchivosSoapIn" />
+      <wsdl:output message="tns:ObtenerArchivosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Dardebaja">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Da de baja un documento</wsdl:documentation>
+      <wsdl:input message="tns:DardebajaSoapIn" />
+      <wsdl:output message="tns:DardebajaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DardebajaSol">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Da de baja un documento</wsdl:documentation>
+      <wsdl:input message="tns:DardebajaSolSoapIn" />
+      <wsdl:output message="tns:DardebajaSolSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Automatizar">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Da de baja un documento</wsdl:documentation>
+      <wsdl:input message="tns:AutomatizarSoapIn" />
+      <wsdl:output message="tns:AutomatizarSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="validar">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Valida</wsdl:documentation>
+      <wsdl:input message="tns:validarSoapIn" />
+      <wsdl:output message="tns:validarSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="obtenerTitulosxCarrera">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtiene las titulos x carrera y carnet</wsdl:documentation>
+      <wsdl:input message="tns:obtenerTitulosxCarreraSoapIn" />
+      <wsdl:output message="tns:obtenerTitulosxCarreraSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="obtenerEntidadxCarrera">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtiene la entidad a la que pertenece una carrera</wsdl:documentation>
+      <wsdl:input message="tns:obtenerEntidadxCarreraSoapIn" />
+      <wsdl:output message="tns:obtenerEntidadxCarreraSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="obtenerNombreAlumno">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtiene las titulos x carrera y carnet</wsdl:documentation>
+      <wsdl:input message="tns:obtenerNombreAlumnoSoapIn" />
+      <wsdl:output message="tns:obtenerNombreAlumnoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerNombreDocente">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtiene nombre docente</wsdl:documentation>
+      <wsdl:input message="tns:ObtenerNombreDocenteSoapIn" />
+      <wsdl:output message="tns:ObtenerNombreDocenteSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerRequisitosCarrera">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtiene nombre docente</wsdl:documentation>
+      <wsdl:input message="tns:ObtenerRequisitosCarreraSoapIn" />
+      <wsdl:output message="tns:ObtenerRequisitosCarreraSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerRequisitosAdmision">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtiene nombre docente</wsdl:documentation>
+      <wsdl:input message="tns:ObtenerRequisitosAdmisionSoapIn" />
+      <wsdl:output message="tns:ObtenerRequisitosAdmisionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerEmpleadoDynamics">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtiene nombre Empleado Dynamics</wsdl:documentation>
+      <wsdl:input message="tns:ObtenerEmpleadoDynamicsSoapIn" />
+      <wsdl:output message="tns:ObtenerEmpleadoDynamicsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerFacultades">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtiene las Facultades</wsdl:documentation>
+      <wsdl:input message="tns:ObtenerFacultadesSoapIn" />
+      <wsdl:output message="tns:ObtenerFacultadesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ViculosxUsuario">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtiene las titulos x carrera y carnet</wsdl:documentation>
+      <wsdl:input message="tns:ViculosxUsuarioSoapIn" />
+      <wsdl:output message="tns:ViculosxUsuarioSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SolicitudesSinTerminar">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtiene las Solicitudes pendientes de un alumno</wsdl:documentation>
+      <wsdl:input message="tns:SolicitudesSinTerminarSoapIn" />
+      <wsdl:output message="tns:SolicitudesSinTerminarSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ServiceSoap" type="tns:ServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ObtenerGeneral">
+      <soap:operation soapAction="http://www.galileo.edu/ObtenerGeneral" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Obtener">
+      <soap:operation soapAction="http://www.galileo.edu/Obtener" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Obtenerxarchivo">
+      <soap:operation soapAction="http://www.galileo.edu/Obtenerxarchivo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GuardarConEtiquetas">
+      <soap:operation soapAction="http://www.galileo.edu/GuardarConEtiquetas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GuardarGeneral">
+      <soap:operation soapAction="http://www.galileo.edu/GuardarGeneral" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GuardarGeneralF">
+      <soap:operation soapAction="http://www.galileo.edu/GuardarGeneralF" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Guardar">
+      <soap:operation soapAction="http://www.galileo.edu/Guardar" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GuardarF">
+      <soap:operation soapAction="http://www.galileo.edu/GuardarF" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerCarrerasxCarnet">
+      <soap:operation soapAction="http://www.galileo.edu/ObtenerCarrerasxCarnet" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtieneEtiquetasxArhivo">
+      <soap:operation soapAction="http://www.galileo.edu/ObtieneEtiquetasxArhivo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GuardarEtiquetas">
+      <soap:operation soapAction="http://www.galileo.edu/GuardarEtiquetas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoverEtiquetas">
+      <soap:operation soapAction="http://www.galileo.edu/RemoverEtiquetas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerApps">
+      <soap:operation soapAction="http://www.galileo.edu/ObtenerApps" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerCat">
+      <soap:operation soapAction="http://www.galileo.edu/ObtenerCat" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerEtiquetas">
+      <soap:operation soapAction="http://www.galileo.edu/ObtenerEtiquetas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerArchivos">
+      <soap:operation soapAction="http://www.galileo.edu/ObtenerArchivos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Dardebaja">
+      <soap:operation soapAction="http://www.galileo.edu/Dardebaja" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DardebajaSol">
+      <soap:operation soapAction="http://www.galileo.edu/DardebajaSol" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Automatizar">
+      <soap:operation soapAction="http://www.galileo.edu/Automatizar" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="validar">
+      <soap:operation soapAction="http://www.galileo.edu/validar" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="obtenerTitulosxCarrera">
+      <soap:operation soapAction="http://www.galileo.edu/obtenerTitulosxCarrera" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="obtenerEntidadxCarrera">
+      <soap:operation soapAction="http://www.galileo.edu/obtenerEntidadxCarrera" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="obtenerNombreAlumno">
+      <soap:operation soapAction="http://www.galileo.edu/obtenerNombreAlumno" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerNombreDocente">
+      <soap:operation soapAction="http://www.galileo.edu/ObtenerNombreDocente" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerRequisitosCarrera">
+      <soap:operation soapAction="http://www.galileo.edu/ObtenerRequisitosCarrera" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerRequisitosAdmision">
+      <soap:operation soapAction="http://www.galileo.edu/ObtenerRequisitosAdmision" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerEmpleadoDynamics">
+      <soap:operation soapAction="http://www.galileo.edu/ObtenerEmpleadoDynamics" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerFacultades">
+      <soap:operation soapAction="http://www.galileo.edu/ObtenerFacultades" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ViculosxUsuario">
+      <soap:operation soapAction="http://www.galileo.edu/ViculosxUsuario" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitudesSinTerminar">
+      <soap:operation soapAction="http://www.galileo.edu/SolicitudesSinTerminar" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ServiceSoap12" type="tns:ServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ObtenerGeneral">
+      <soap12:operation soapAction="http://www.galileo.edu/ObtenerGeneral" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Obtener">
+      <soap12:operation soapAction="http://www.galileo.edu/Obtener" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Obtenerxarchivo">
+      <soap12:operation soapAction="http://www.galileo.edu/Obtenerxarchivo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GuardarConEtiquetas">
+      <soap12:operation soapAction="http://www.galileo.edu/GuardarConEtiquetas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GuardarGeneral">
+      <soap12:operation soapAction="http://www.galileo.edu/GuardarGeneral" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GuardarGeneralF">
+      <soap12:operation soapAction="http://www.galileo.edu/GuardarGeneralF" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Guardar">
+      <soap12:operation soapAction="http://www.galileo.edu/Guardar" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GuardarF">
+      <soap12:operation soapAction="http://www.galileo.edu/GuardarF" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerCarrerasxCarnet">
+      <soap12:operation soapAction="http://www.galileo.edu/ObtenerCarrerasxCarnet" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtieneEtiquetasxArhivo">
+      <soap12:operation soapAction="http://www.galileo.edu/ObtieneEtiquetasxArhivo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GuardarEtiquetas">
+      <soap12:operation soapAction="http://www.galileo.edu/GuardarEtiquetas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoverEtiquetas">
+      <soap12:operation soapAction="http://www.galileo.edu/RemoverEtiquetas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerApps">
+      <soap12:operation soapAction="http://www.galileo.edu/ObtenerApps" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerCat">
+      <soap12:operation soapAction="http://www.galileo.edu/ObtenerCat" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerEtiquetas">
+      <soap12:operation soapAction="http://www.galileo.edu/ObtenerEtiquetas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerArchivos">
+      <soap12:operation soapAction="http://www.galileo.edu/ObtenerArchivos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Dardebaja">
+      <soap12:operation soapAction="http://www.galileo.edu/Dardebaja" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DardebajaSol">
+      <soap12:operation soapAction="http://www.galileo.edu/DardebajaSol" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Automatizar">
+      <soap12:operation soapAction="http://www.galileo.edu/Automatizar" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="validar">
+      <soap12:operation soapAction="http://www.galileo.edu/validar" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="obtenerTitulosxCarrera">
+      <soap12:operation soapAction="http://www.galileo.edu/obtenerTitulosxCarrera" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="obtenerEntidadxCarrera">
+      <soap12:operation soapAction="http://www.galileo.edu/obtenerEntidadxCarrera" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="obtenerNombreAlumno">
+      <soap12:operation soapAction="http://www.galileo.edu/obtenerNombreAlumno" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerNombreDocente">
+      <soap12:operation soapAction="http://www.galileo.edu/ObtenerNombreDocente" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerRequisitosCarrera">
+      <soap12:operation soapAction="http://www.galileo.edu/ObtenerRequisitosCarrera" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerRequisitosAdmision">
+      <soap12:operation soapAction="http://www.galileo.edu/ObtenerRequisitosAdmision" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerEmpleadoDynamics">
+      <soap12:operation soapAction="http://www.galileo.edu/ObtenerEmpleadoDynamics" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerFacultades">
+      <soap12:operation soapAction="http://www.galileo.edu/ObtenerFacultades" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ViculosxUsuario">
+      <soap12:operation soapAction="http://www.galileo.edu/ViculosxUsuario" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitudesSinTerminar">
+      <soap12:operation soapAction="http://www.galileo.edu/SolicitudesSinTerminar" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service">
+    <wsdl:port name="ServiceSoap" binding="tns:ServiceSoap">
+      <soap:address location="http://dg.galileo.edu/dg/service.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ServiceSoap12" binding="tns:ServiceSoap12">
+      <soap12:address location="http://dg.galileo.edu/dg/service.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

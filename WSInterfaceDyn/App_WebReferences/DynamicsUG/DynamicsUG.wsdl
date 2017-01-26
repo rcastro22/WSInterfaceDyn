@@ -1,0 +1,803 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="Cumpleaneros">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="mes" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CumpleanerosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CumpleanerosResult" type="tns:ArrayOfCumple" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfCumple">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Cumple" nillable="true" type="tns:Cumple" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Cumple">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ComplexObject">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="NOMBRE" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="FECHA" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="DEPTO" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="LinkImagen" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="FECHA2" type="s:dateTime" />
+              <s:element minOccurs="0" maxOccurs="1" name="correlativo" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ComplexObject" abstract="true">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:StructuralObject" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="StructuralObject" abstract="true" />
+      <s:element name="GetCarees">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetCareesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCareesResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerJefe">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PICTUREID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerJefeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerJefeResult" type="tns:ArrayOfObtener_Jefe_Result" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfObtener_Jefe_Result">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Obtener_Jefe_Result" nillable="true" type="tns:Obtener_Jefe_Result" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Obtener_Jefe_Result">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ComplexObject">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Codigo_de_empleado" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Posision" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Tarea" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Unidad_organizativa" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Torre" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Oficina" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Extension" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Jefe" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ObtenerSubordinados">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PICTUREID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerSubordinadosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerSubordinadosResult" type="tns:ArrayOfObtener_Subordinados_Result" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfObtener_Subordinados_Result">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Obtener_Subordinados_Result" nillable="true" type="tns:Obtener_Subordinados_Result" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Obtener_Subordinados_Result">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ComplexObject">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="PICTUREID" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="NAME" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ObtenerCC">
+        <s:complexType />
+      </s:element>
+      <s:element name="ObtenerCCResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerCCResult" type="tns:ArrayOfObtener_CC_Result" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfObtener_CC_Result">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Obtener_CC_Result" nillable="true" type="tns:Obtener_CC_Result" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Obtener_CC_Result">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ComplexObject">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Codigo_de_carrera" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Centro_de_Costo" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="UpdateOraCC">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="_carrera" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="_cc" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateOraCCResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="UpdateOraCCResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CambiaPersona">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="_carrera" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="_cc" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CambiaPersonaResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="ObtenerDeptos">
+        <s:complexType />
+      </s:element>
+      <s:element name="ObtenerDeptosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerDeptosResult" type="tns:ArrayOfObtener_Departamentos_Result" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfObtener_Departamentos_Result">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Obtener_Departamentos_Result" nillable="true" type="tns:Obtener_Departamentos_Result" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Obtener_Departamentos_Result">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ComplexObject">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="ORGANIZATIONUNITID" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="DESCRIPTION" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ObtenerEmpleados">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="codigo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nombre" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="coddepto" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="extencion" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerEmpleadosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerEmpleadosResult" type="tns:ArrayOfObtener_Empleados_Result" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfObtener_Empleados_Result">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Obtener_Empleados_Result" nillable="true" type="tns:Obtener_Empleados_Result" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Obtener_Empleados_Result">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ComplexObject">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="codigo" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Nombre" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="CodDepa" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Departamento" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Torre" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Oficina" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Extencion" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Foto" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="ruta" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="CatedrativosFaltantesUG">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fecha" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="origen" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CatedrativosFaltantesUGResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CatedrativosFaltantesUGResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CarrerasFaltantesUG">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fecha" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="origen" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CarrerasFaltantesUGResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CarrerasFaltantesUGResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="New_Peaple">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PNOMBRE1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PNOMBRE2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PAPELLIDO1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PAPELLIDO2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PDECASADA" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PCEDULA" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="PNACIONALIDAD" nillable="true" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="PPAIS" nillable="true" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="PDEPTO_ID" nillable="true" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="PMUNI_ID" nillable="true" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="PDPI" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PPASAPORTE" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="PPAIS_PAS" nillable="true" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="PFECHANAC" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="PSEXO" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PESTADOCIVIL" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PCODIGO" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PPUESTO" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PDEPARTAMENTO" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="New_PeapleResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="New_PeapleResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Update_Peaple">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="PCORRELATIVO_IN" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="PNOMBRE1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PNOMBRE2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PAPELLIDO1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PAPELLIDO2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PDECASADA" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PCEDULA" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="PNACIONALIDAD" nillable="true" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="PPAIS" nillable="true" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="PDEPTO_ID" nillable="true" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="PMUNI_ID" nillable="true" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="PDPI" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PPASAPORTE" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="PPAIS_PAS" nillable="true" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="PFECHANAC" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="PSEXO" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PESTADOCIVIL" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PCODIGO" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PPUESTO" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PDEPARTAMENTO" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Update_PeapleResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="Update_PeapleResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="cargaAdministrativo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PNOMBRE1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PNOMBRE2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PAPELLIDO1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PAPELLIDO2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PDECASADA" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="PTIPO" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="PCEDULA" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PNACIONALIDAD" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PPAIS" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PDEPTO_ID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PMUNI_ID" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="PFECHANAC" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="PSEXO" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PESTADOCIVIL" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PCODIGO" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PPUESTO" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PDEPARTAMENTO" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nit" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="cargaAdministrativoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="cargaAdministrativoResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="CumpleanerosSoapIn">
+    <wsdl:part name="parameters" element="tns:Cumpleaneros" />
+  </wsdl:message>
+  <wsdl:message name="CumpleanerosSoapOut">
+    <wsdl:part name="parameters" element="tns:CumpleanerosResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCareesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCarees" />
+  </wsdl:message>
+  <wsdl:message name="GetCareesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCareesResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerJefeSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtenerJefe" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerJefeSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerJefeResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerSubordinadosSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtenerSubordinados" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerSubordinadosSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerSubordinadosResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerCCSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtenerCC" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerCCSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerCCResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateOraCCSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateOraCC" />
+  </wsdl:message>
+  <wsdl:message name="UpdateOraCCSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateOraCCResponse" />
+  </wsdl:message>
+  <wsdl:message name="CambiaPersonaSoapIn">
+    <wsdl:part name="parameters" element="tns:CambiaPersona" />
+  </wsdl:message>
+  <wsdl:message name="CambiaPersonaSoapOut">
+    <wsdl:part name="parameters" element="tns:CambiaPersonaResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerDeptosSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtenerDeptos" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerDeptosSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerDeptosResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerEmpleadosSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtenerEmpleados" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerEmpleadosSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerEmpleadosResponse" />
+  </wsdl:message>
+  <wsdl:message name="CatedrativosFaltantesUGSoapIn">
+    <wsdl:part name="parameters" element="tns:CatedrativosFaltantesUG" />
+  </wsdl:message>
+  <wsdl:message name="CatedrativosFaltantesUGSoapOut">
+    <wsdl:part name="parameters" element="tns:CatedrativosFaltantesUGResponse" />
+  </wsdl:message>
+  <wsdl:message name="CarrerasFaltantesUGSoapIn">
+    <wsdl:part name="parameters" element="tns:CarrerasFaltantesUG" />
+  </wsdl:message>
+  <wsdl:message name="CarrerasFaltantesUGSoapOut">
+    <wsdl:part name="parameters" element="tns:CarrerasFaltantesUGResponse" />
+  </wsdl:message>
+  <wsdl:message name="New_PeapleSoapIn">
+    <wsdl:part name="parameters" element="tns:New_Peaple" />
+  </wsdl:message>
+  <wsdl:message name="New_PeapleSoapOut">
+    <wsdl:part name="parameters" element="tns:New_PeapleResponse" />
+  </wsdl:message>
+  <wsdl:message name="Update_PeapleSoapIn">
+    <wsdl:part name="parameters" element="tns:Update_Peaple" />
+  </wsdl:message>
+  <wsdl:message name="Update_PeapleSoapOut">
+    <wsdl:part name="parameters" element="tns:Update_PeapleResponse" />
+  </wsdl:message>
+  <wsdl:message name="cargaAdministrativoSoapIn">
+    <wsdl:part name="parameters" element="tns:cargaAdministrativo" />
+  </wsdl:message>
+  <wsdl:message name="cargaAdministrativoSoapOut">
+    <wsdl:part name="parameters" element="tns:cargaAdministrativoResponse" />
+  </wsdl:message>
+  <wsdl:portType name="DynamicsUGSoap">
+    <wsdl:operation name="Cumpleaneros">
+      <wsdl:input message="tns:CumpleanerosSoapIn" />
+      <wsdl:output message="tns:CumpleanerosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCarees">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retorna la tabla de carreras desde Oracle</wsdl:documentation>
+      <wsdl:input message="tns:GetCareesSoapIn" />
+      <wsdl:output message="tns:GetCareesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerJefe">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retorna Posision,Puesto,Depto,torre, foncina,extencion, jefe</wsdl:documentation>
+      <wsdl:input message="tns:ObtenerJefeSoapIn" />
+      <wsdl:output message="tns:ObtenerJefeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerSubordinados">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retorna la tabla de subordinados segun el PictureID</wsdl:documentation>
+      <wsdl:input message="tns:ObtenerSubordinadosSoapIn" />
+      <wsdl:output message="tns:ObtenerSubordinadosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerCC">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retorna la tabla de carreras y centros de costo</wsdl:documentation>
+      <wsdl:input message="tns:ObtenerCCSoapIn" />
+      <wsdl:output message="tns:ObtenerCCSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateOraCC">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Actualiza los centros de costo de Oracle</wsdl:documentation>
+      <wsdl:input message="tns:UpdateOraCCSoapIn" />
+      <wsdl:output message="tns:UpdateOraCCSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CambiaPersona">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Actualiza los centros de costo de Oracle</wsdl:documentation>
+      <wsdl:input message="tns:CambiaPersonaSoapIn" />
+      <wsdl:output message="tns:CambiaPersonaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerDeptos">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retorna todos los Departamentos de Dynamics</wsdl:documentation>
+      <wsdl:input message="tns:ObtenerDeptosSoapIn" />
+      <wsdl:output message="tns:ObtenerDeptosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerEmpleados">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retorna todos los Empleados de la Empresa UG</wsdl:documentation>
+      <wsdl:input message="tns:ObtenerEmpleadosSoapIn" />
+      <wsdl:output message="tns:ObtenerEmpleadosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CatedrativosFaltantesUG">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Listado de catedraticos que estan en Oracle pero no en dynamics para UG: Fecha:dd/MM/YYYY</wsdl:documentation>
+      <wsdl:input message="tns:CatedrativosFaltantesUGSoapIn" />
+      <wsdl:output message="tns:CatedrativosFaltantesUGSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CarrerasFaltantesUG">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Listado de carreras que estan en Oracle pero no en dynamics para UG: Fecha:dd/MM/YYYY</wsdl:documentation>
+      <wsdl:input message="tns:CarrerasFaltantesUGSoapIn" />
+      <wsdl:output message="tns:CarrerasFaltantesUGSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="New_Peaple">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Graba nuevo empleado en people para Dynamics</wsdl:documentation>
+      <wsdl:input message="tns:New_PeapleSoapIn" />
+      <wsdl:output message="tns:New_PeapleSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Update_Peaple">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Actuliza empleado en peaple para Dynamics</wsdl:documentation>
+      <wsdl:input message="tns:Update_PeapleSoapIn" />
+      <wsdl:output message="tns:Update_PeapleSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="cargaAdministrativo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Graba nuevo empleado en peaple</wsdl:documentation>
+      <wsdl:input message="tns:cargaAdministrativoSoapIn" />
+      <wsdl:output message="tns:cargaAdministrativoSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DynamicsUGSoap" type="tns:DynamicsUGSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Cumpleaneros">
+      <soap:operation soapAction="http://tempuri.org/Cumpleaneros" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCarees">
+      <soap:operation soapAction="http://tempuri.org/GetCarees" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerJefe">
+      <soap:operation soapAction="http://tempuri.org/ObtenerJefe" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerSubordinados">
+      <soap:operation soapAction="http://tempuri.org/ObtenerSubordinados" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerCC">
+      <soap:operation soapAction="http://tempuri.org/ObtenerCC" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateOraCC">
+      <soap:operation soapAction="http://tempuri.org/UpdateOraCC" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CambiaPersona">
+      <soap:operation soapAction="http://tempuri.org/CambiaPersona" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerDeptos">
+      <soap:operation soapAction="http://tempuri.org/ObtenerDeptos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerEmpleados">
+      <soap:operation soapAction="http://tempuri.org/ObtenerEmpleados" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CatedrativosFaltantesUG">
+      <soap:operation soapAction="http://tempuri.org/CatedrativosFaltantesUG" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CarrerasFaltantesUG">
+      <soap:operation soapAction="http://tempuri.org/CarrerasFaltantesUG" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="New_Peaple">
+      <soap:operation soapAction="http://tempuri.org/New_Peaple" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Update_Peaple">
+      <soap:operation soapAction="http://tempuri.org/Update_Peaple" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cargaAdministrativo">
+      <soap:operation soapAction="http://tempuri.org/cargaAdministrativo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="DynamicsUGSoap12" type="tns:DynamicsUGSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Cumpleaneros">
+      <soap12:operation soapAction="http://tempuri.org/Cumpleaneros" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCarees">
+      <soap12:operation soapAction="http://tempuri.org/GetCarees" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerJefe">
+      <soap12:operation soapAction="http://tempuri.org/ObtenerJefe" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerSubordinados">
+      <soap12:operation soapAction="http://tempuri.org/ObtenerSubordinados" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerCC">
+      <soap12:operation soapAction="http://tempuri.org/ObtenerCC" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateOraCC">
+      <soap12:operation soapAction="http://tempuri.org/UpdateOraCC" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CambiaPersona">
+      <soap12:operation soapAction="http://tempuri.org/CambiaPersona" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerDeptos">
+      <soap12:operation soapAction="http://tempuri.org/ObtenerDeptos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerEmpleados">
+      <soap12:operation soapAction="http://tempuri.org/ObtenerEmpleados" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CatedrativosFaltantesUG">
+      <soap12:operation soapAction="http://tempuri.org/CatedrativosFaltantesUG" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CarrerasFaltantesUG">
+      <soap12:operation soapAction="http://tempuri.org/CarrerasFaltantesUG" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="New_Peaple">
+      <soap12:operation soapAction="http://tempuri.org/New_Peaple" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Update_Peaple">
+      <soap12:operation soapAction="http://tempuri.org/Update_Peaple" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cargaAdministrativo">
+      <soap12:operation soapAction="http://tempuri.org/cargaAdministrativo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DynamicsUG">
+    <wsdl:port name="DynamicsUGSoap" binding="tns:DynamicsUGSoap">
+      <soap:address location="http://dg.galileo.edu/core/DynamicsUG.asmx" />
+    </wsdl:port>
+    <wsdl:port name="DynamicsUGSoap12" binding="tns:DynamicsUGSoap12">
+      <soap12:address location="http://dg.galileo.edu/core/DynamicsUG.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
