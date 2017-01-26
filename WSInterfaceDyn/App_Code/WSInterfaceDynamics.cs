@@ -378,14 +378,14 @@ public class WSInterfaceDynamics : System.Web.Services.WebService
 
 
     [WebMethod(Description = "Ingresa los docentes y tutores según su numero de NIT", EnableSession = false)]
-    // 15-10-2012, Roberto Castro, Ingresa los docentes y tutores según su numero de NIT
+    // 15-10-2012, Roberto Castro, Ingresa los docentes y tutores según su numero de NIT desde la aplicacion de nuevo Docente en Informatica.galileo.edu
     public String nuevoTutorDocenteDAX(string _orig, string _nit, string _nombre, string _codigo)
     {
         string ret = "";
         Axapta ax = new Axapta();
         try
         {
-            if (_nit != "" || _nit != null)
+            if (_nit != "" && _nit != null && validaNIt(_nit))
             {
                 // Variables para el tratamiento de datos de Dynamics AX                
                 string[] parms = new string[] { _orig, _nit, _nombre, _codigo };
@@ -446,7 +446,14 @@ public class WSInterfaceDynamics : System.Web.Services.WebService
             }
             else
             {
-                ret = "-1|El NIT es obligatorio";
+                if (_nit == "" || _nit == null)
+                {
+                    ret = "-1|El NIT es obligatorio";
+                }
+                else if (!validaNIt(_nit))
+                {
+                    ret = "-1|El NIT es inválido";
+                }
             }
 
             if (ret == "")
@@ -1036,6 +1043,56 @@ public class WSInterfaceDynamics : System.Web.Services.WebService
             return docenteList;
             // Take other error action as needed.
         }
+    }
+
+    public bool validaNIt(string _nitNum)
+    {
+        string numero;
+        int verificador, i, total = 0, modulo,salida;
+        bool valid = true;
+        ;
+
+        // Obtengo las variables del NIT
+        _nitNum = _nitNum.Replace("-", "").Replace(" ", "");
+
+        for (i = 0; i < _nitNum.Length; i++)
+        {
+            if (!int.TryParse(_nitNum.Substring(i, 1), out salida))
+            {
+                if (!(i == _nitNum.Length && _nitNum.Substring(i, 1) == "K"))
+                {
+                    valid = false;
+                }
+            }
+        }
+
+        if (valid)
+        {
+            numero = _nitNum.Substring(0, _nitNum.Length - 1);
+            verificador = Convert.ToInt32((_nitNum.Substring(_nitNum.Length - 1, 1).ToUpper() == "K" ? "10" : _nitNum.Substring(_nitNum.Length - 1, 1)));
+
+            // Se aplica algoritmo
+            for (i = 0; i < numero.Length; i++)
+            {
+                total = total + (Convert.ToInt32(numero.Substring(i, 1)) * ((numero.Length + 1) - (i - 1)));
+            }
+            //info(strfmt("%1",total));
+            modulo = total % 11;
+            modulo = 11 - modulo;
+            modulo = modulo % 11;
+
+
+            if (modulo == verificador && total != 0)
+            {
+                valid = true;
+            }
+            else
+            {
+                valid = false;
+            }
+        }
+        
+        return valid;
     }
 
     public class DocenteDAX
