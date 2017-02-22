@@ -45,11 +45,17 @@ public class WSInterfaceDynamics : System.Web.Services.WebService
             //NetworkCredential cred = new NetworkCredential("Dynamics"
 
             //////////// PROCESO /////////////
-            // Configuracion de los parametros necesarios para la conexion a la Base de datos de Oracle                           
-            DynamicsUG.DynamicsUG soap = new DynamicsUG.DynamicsUG();
-            //WSGetDataOracle soap = new WSGetDataOracle();
+            // Configuracion de los parametros necesarios para la conexion a la Base de datos de Oracle                                           
+            OracleCommand cmd = new OracleCommand();
+            OracleDataAdapter adapter = new OracleDataAdapter(cmd);
 
-            ds = soap.GetCarees();
+            cmd.CommandText = "DBAFISICC.dynamics.CaCarrerasxDirector";
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Connection = cn;
+            cmd.Parameters.Add("o_remCursor", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // Llena el DataSet con los datos obtenidos del Procedimiento Almacenado                
+            adapter.Fill(ds, "Carees");
+
             // Inicia sesion en Dynamics
             ax.Logon(null, null, null, null);
             // Crea um registo de la tabla respectiva enviada
@@ -59,15 +65,16 @@ public class WSInterfaceDynamics : System.Web.Services.WebService
             // Recorre los registros del DataSet
             foreach (DataRow row in ds.Tables[0].Rows)
             {
-                if (row.ItemArray.Length == 5)
+                if (row.ItemArray.Length == 6)
                 {
                     col += "\n";
-                    string CareerId, Description, DirectoName, dim1, dim2, CareerPrincipal;
+                    string CareerId, Description, DirectoName, dim1, dim2, CareerPrincipal, Status;
                     CareerId = Convert.ToString(row[0]);
                     Description = Convert.ToString(row[1]);
                     DirectoName = Convert.ToString(row[2]);
                     dim2 = Convert.ToString(row[3]);
                     CareerPrincipal = Convert.ToString(row[4]);
+                    Status = Convert.ToString(row[5]);
                     if (dim2.Length >= 6)
                     {
                         dim1 = dim2.Substring(0, 3);
@@ -85,6 +92,7 @@ public class WSInterfaceDynamics : System.Web.Services.WebService
                     axRecord.set_Field("DIMENSION[1]", dim1);
                     axRecord.set_Field("DIMENSION[2]", dim2);
                     axRecord.set_Field("PRINCIPALCAREER", CareerPrincipal);
+                    axRecord.set_Field("STATUS", (Status == "A" ? "Activo" : "Inactivo"));
 
                     // Inserta el registro en Dynamics
                     axRecord.Insert();
