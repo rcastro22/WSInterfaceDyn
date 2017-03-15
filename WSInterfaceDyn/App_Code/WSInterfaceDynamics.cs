@@ -387,13 +387,13 @@ public class WSInterfaceDynamics : System.Web.Services.WebService
 
     [WebMethod(Description = "Ingresa los docentes y tutores según su numero de NIT", EnableSession = false)]
     // 15-10-2012, Roberto Castro, Ingresa los docentes y tutores según su numero de NIT desde la aplicacion de nuevo Docente en Informatica.galileo.edu
-    public String nuevoTutorDocenteDAX(string _orig, string _nit, string _nombre, string _codigo)
+    public String nuevoTutorDocenteDAX(string _orig, string _nit, string _nombre, string _codigo, bool _nacional)
     {
         string ret = "";
         Axapta ax = new Axapta();
         try
         {
-            if (_nit != "" && _nit != null && validaNIt(_nit))
+            if (_nit != "" && _nit != null && ((_nacional && validaNIt(_nit)) || !_nacional))
             {
                 // Variables para el tratamiento de datos de Dynamics AX                
                 string[] parms = new string[] { _orig, _nit, _nombre, _codigo };
