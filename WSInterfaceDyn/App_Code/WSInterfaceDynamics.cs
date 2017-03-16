@@ -1058,6 +1058,7 @@ public class WSInterfaceDynamics : System.Web.Services.WebService
         string numero;
         int verificador, i, total = 0, modulo,salida;
         bool valid = true;
+        int aux = 1;
         ;
 
         // Obtengo las variables del NIT
@@ -1082,7 +1083,7 @@ public class WSInterfaceDynamics : System.Web.Services.WebService
             // Se aplica algoritmo
             for (i = 0; i < numero.Length; i++)
             {
-                total = total + (Convert.ToInt32(numero.Substring(i, 1)) * ((numero.Length + 1) - (i - 1)));
+                total = total + (Convert.ToInt32(numero.Substring(i, 1)) * ((numero.Length + 1) - (i)));
             }
             //info(strfmt("%1",total));
             modulo = total % 11;
