@@ -1062,13 +1062,13 @@ public class WSInterfaceDynamics : System.Web.Services.WebService
         ;
 
         // Obtengo las variables del NIT
-        _nitNum = _nitNum.Replace("-", "").Replace(" ", "");
+        _nitNum = _nitNum.Replace("-", "").Replace(" ", "").ToUpper();
 
         for (i = 0; i < _nitNum.Length; i++)
         {
             if (!int.TryParse(_nitNum.Substring(i, 1), out salida))
             {
-                if (!(i == _nitNum.Length && _nitNum.Substring(i, 1) == "K"))
+                if (!(i == (_nitNum.Length - 1) && _nitNum.Substring(i, 1) == "K"))
                 {
                     valid = false;
                 }
