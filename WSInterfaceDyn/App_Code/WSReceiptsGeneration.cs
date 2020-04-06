@@ -1238,6 +1238,47 @@ public class WSReceiptsGeneration : System.Web.Services.WebService
         return fileEnc;
     }
 
+
+    [WebMethod]
+    public string obtenerRTU(string _codpers)
+    {
+        string fileEnc = "";
+        int filaFechaMaxima = 0, cont = 0;
+        WSExpediente.Service ser1 = new WSExpediente.Service();
+        WSExpediente.Etiquetas[] et = new WSExpediente.Etiquetas[1];
+        WSExpediente.Etiquetas arch = new WSExpediente.Etiquetas();
+        arch.Etiqueta = 9;
+        arch.Valor = _codpers;
+        et[0] = arch;
+        DataSet dsNew = new DataSet();
+        dsNew = ser1.ObtenerArchivos("DO", 29, et);
+
+        if (dsNew.Tables[0].Rows.Count > 0)
+        {
+            string boleta = "", people = "", fecha = "";
+            foreach (DataRow row in dsNew.Tables[0].Rows)
+            {
+                cont++;
+                if (fecha == "")
+                {
+                    filaFechaMaxima = cont;
+                    fecha = Convert.ToString(row["FECHA"]);
+                }
+                else
+                {
+                    if (Convert.ToDateTime(fecha) < Convert.ToDateTime(row["FECHA"]))
+                    {
+                        filaFechaMaxima = cont;
+                        fecha = Convert.ToString(row["FECHA"]);
+                    }
+                }
+            }
+
+            fileEnc = encripta(Convert.ToDecimal(dsNew.Tables[0].Rows[filaFechaMaxima - 1][0]));
+        }
+        return fileEnc;
+    }
+
     protected string encripta(decimal id)
     {
         EncryptedQueryString args = new EncryptedQueryString();
@@ -1269,6 +1310,28 @@ public class WSReceiptsGeneration : System.Web.Services.WebService
             return false;
     }
 
+
+    [WebMethod]
+    public bool validaExisteBoletaTest(string boleta, string persona)
+    {
+        WSExpediente.Service ser = new WSExpediente.Service();
+        WSExpediente.Etiquetas[] et = new WSExpediente.Etiquetas[2];
+        WSExpediente.Etiquetas arch = new WSExpediente.Etiquetas();
+        arch.Etiqueta = 18;
+        arch.Valor = boleta;
+        et[0] = arch;
+        arch = new WSExpediente.Etiquetas();
+        arch.Etiqueta = 24;
+        arch.Valor = persona;
+        et[1] = arch;
+        DataSet dsNew = new DataSet();
+        dsNew = ser.ObtenerArchivos("PR", 35, et);
+
+        if (dsNew.Tables[0].Rows.Count == 0)
+            return true;
+        else
+            return false;
+    }
 
 
     public string enletras(string num)

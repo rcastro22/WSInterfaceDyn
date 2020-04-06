@@ -7,6 +7,7 @@ using Microsoft.Dynamics.BusinessConnectorNet;
 using Oracle.DataAccess.Client;
 using Oracle.DataAccess.Types;
 using System.Configuration;
+using System.Data.SqlClient;
 using System.Data;
 
 [WebService(Namespace = "http://galileo.edu/dynamicsax/")]
@@ -16,6 +17,7 @@ using System.Data;
 
 public class WSInterfaceDynamics : System.Web.Services.WebService
 {
+    SqlConnection conn = new SqlConnection("Data Source=srvdynamicsax;Initial Catalog=DAXPRODGALILEO;Integrated Security=True;MultipleActiveResultSets=true");
     OracleConnection cn = new OracleConnection(ConfigurationManager.ConnectionStrings["galileo"].ConnectionString);
     public WSInterfaceDynamics()
     {
@@ -65,16 +67,17 @@ public class WSInterfaceDynamics : System.Web.Services.WebService
             // Recorre los registros del DataSet
             foreach (DataRow row in ds.Tables[0].Rows)
             {
-                if (row.ItemArray.Length == 6)
+                if (row.ItemArray.Length == 7)
                 {
                     col += "\n";
-                    string CareerId, Description, DirectoName, dim1, dim2, CareerPrincipal, Status;
+                    string CareerId, Description, DirectoName, dim1, dim2, CareerPrincipal, Sede, Status;
                     CareerId = Convert.ToString(row[0]);
                     Description = Convert.ToString(row[1]);
                     DirectoName = Convert.ToString(row[2]);
                     dim2 = Convert.ToString(row[3]);
                     CareerPrincipal = Convert.ToString(row[4]);
-                    Status = Convert.ToString(row[5]);
+                    Sede = Convert.ToString(row[5]);
+                    Status = Convert.ToString(row[6]);
                     if (dim2.Length >= 6)
                     {
                         dim1 = dim2.Substring(0, 3);
@@ -93,6 +96,7 @@ public class WSInterfaceDynamics : System.Web.Services.WebService
                     axRecord.set_Field("DIMENSION[2]", dim2);
                     axRecord.set_Field("PRINCIPALCAREER", CareerPrincipal);
                     axRecord.set_Field("STATUS", (Status == "A" ? "Activo" : "Inactivo"));
+                    axRecord.set_Field("SEDE", Sede);
 
                     // Inserta el registro en Dynamics
                     axRecord.Insert();
@@ -697,18 +701,27 @@ public class WSInterfaceDynamics : System.Web.Services.WebService
         return dt;
     }
 
+    // 18-07-2018, Se comento ya que por las variables out no se puede referenciar en Dynamics
     [WebMethod(Description = "Busca un empleado especifico para la aplicacion de windows", EnableSession = false)]
     // 10-09-2015, Roberto Castro, Busca un empleado especifico segun el codigo para la aplicacion de Windows
-    public void Cargar(string Codigo, out string Nombre, out string Torre, out string Oficina, out string Extension,
-        out string Correlativo, out string Departamento, out string Puesto)
+    public DataTable Cargar(string Codigo)
     {
-        Nombre = string.Empty;
+        /*Nombre = string.Empty;
         Torre = string.Empty;
         Oficina = string.Empty;
         Extension = string.Empty;
         Correlativo = string.Empty;
         Departamento = string.Empty;
-        Puesto = string.Empty;
+        Puesto = string.Empty;*/
+
+        DataTable dt = new DataTable("EmplTable");
+        dt.Columns.Add("Torre", typeof(string));
+        dt.Columns.Add("Oficina", typeof(string));
+        dt.Columns.Add("Extension", typeof(string));
+        dt.Columns.Add("Correlativo", typeof(string));
+        dt.Columns.Add("Nombre", typeof(string));
+        dt.Columns.Add("Departamento", typeof(string));
+        dt.Columns.Add("Puesto", typeof(string));
 
         // Variables para el tratamiento de datos de Dynamics AX
         Axapta ax = new Axapta();
@@ -751,18 +764,31 @@ public class WSInterfaceDynamics : System.Web.Services.WebService
         // Lee el registro en Dynamics
         if (axEmpleado.Found)
         {
+            DataRow dr = dt.NewRow();
             //Sacar parametros
-            Torre = Convert.ToString(axEmpleado.get_Field("TOWER"));
+            /*Torre = Convert.ToString(axEmpleado.get_Field("TOWER"));
             Oficina = Convert.ToString(axEmpleado.get_Field("OFFICE"));
             Extension = Convert.ToString(axEmpleado.get_Field("EXTENSION"));
             Correlativo = Convert.ToString(axEmpleado.get_Field("PICTUREID"));
             Nombre = Convert.ToString(axGrupo.get_Field("NAME"));
             Departamento = Convert.ToString(axDepartamento.get_Field("DESCRIPTION"));
-            Puesto = Convert.ToString(axPuesto.get_Field("DESCRIPTION"));
+            Puesto = Convert.ToString(axPuesto.get_Field("DESCRIPTION"));*/
+
+            dr["Torre"] = Convert.ToString(axEmpleado.get_Field("TOWER"));
+            dr["Oficina"] = Convert.ToString(axEmpleado.get_Field("OFFICE"));
+            dr["Extension"] = Convert.ToString(axEmpleado.get_Field("EXTENSION"));
+            dr["Correlativo"] = Convert.ToString(axEmpleado.get_Field("PICTUREID"));
+            dr["Nombre"] = Convert.ToString(axGrupo.get_Field("NAME"));
+            dr["Departamento"] = Convert.ToString(axDepartamento.get_Field("DESCRIPTION"));
+            dr["Puesto"] = Convert.ToString(axPuesto.get_Field("DESCRIPTION"));
+
+            dt.Rows.Add(dr);
         }
 
         // Cierra sesion en Dynamics
         ax.Logoff();
+
+        return dt;
     }
 
     [WebMethod(Description = "Actualiza el empleado de Dynamics desde aplicacion de windows", EnableSession = false)]
@@ -1053,10 +1079,106 @@ public class WSInterfaceDynamics : System.Web.Services.WebService
         }
     }
 
+
+    [WebMethod(Description = "Obtiene el correo del docente de Oracle", EnableSession = false)]
+    // 14-09-2015, Roberto Castro, Obtiene las Torres Oracle
+    public void obtenerCorreoDocentes()
+    {
+        try
+        {
+            // Variables para la conexion y extraccion de datos de Oracle                
+            OracleCommand cmd = new OracleCommand();
+            DataTable dt = new DataTable();
+            OracleDataAdapter adapter = new OracleDataAdapter(cmd);
+
+            // Variables para la conexion y actualización de datos de Dynamics
+            Axapta ax = new Axapta();
+            AxaptaRecord axRecord;
+            string tableName = "IEmplVendCodeRefTable";
+            String strQuery = "select forupdate %1 ";
+
+            // Variables de uso
+            string email;
+            string codpers, tutor;
+            OracleDataReader dr;
+
+            try
+            {
+                ax.Logon(null, null, null, null);
+                ax.TTSBegin();
+                axRecord = ax.CreateAxaptaRecord(tableName);
+                axRecord.ExecuteStmt(strQuery);
+
+                while (axRecord.Found)
+                {
+                    email = "";
+                    codpers = (string)axRecord.get_Field("IEmplIdUGA");
+                    tutor = (string)axRecord.get_Field("IEmplIdIDEA");
+
+                    if (codpers != "" || tutor != "")
+                    {
+                        cmd = new OracleCommand();
+                        dt = new DataTable();
+                        cmd.CommandText = "select email from nopersonaltb where " + (codpers != "" ? "CODPERS" : "TUTOR") + " = :codpers";
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Connection = cn;
+                        cmd.BindByName = true;
+                        cmd.Parameters.Add("CODPERS", (codpers != "" ? codpers : tutor));
+
+                        try
+                        {
+                            cn.Open();
+                            dr = cmd.ExecuteReader();
+                            dt.Load(dr);
+                            if (dt.Rows.Count != 0)
+                                email = dt.Rows[0]["email"].ToString();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw ex;
+                        }
+                        finally
+                        {
+                            cn.Close();
+                            cmd.Dispose();
+                            dt.Dispose();
+                        }
+
+                        // Provee los valores para cada uno de los campos del registro de la tabla UGLCareersTable
+                        axRecord.set_Field("email", email);
+
+                        // Actualiza el registro en Dynamics
+                        axRecord.Update();
+                    }
+
+                    axRecord.Next();
+                }
+
+                ax.TTSCommit();
+                // Cierra sesion en Dynamics 
+                ax.Logoff();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                cn.Close();
+                cmd.Dispose();
+            }
+
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+    }
+
     public bool validaNIt(string _nitNum)
     {
         string numero;
-        int verificador, i, total = 0, modulo,salida;
+        int verificador, i, total = 0, modulo, salida;
         bool valid = true;
         int aux = 1;
         ;
@@ -1100,7 +1222,7 @@ public class WSInterfaceDynamics : System.Web.Services.WebService
                 valid = false;
             }
         }
-        
+
         return valid;
     }
 
@@ -1114,5 +1236,199 @@ public class WSInterfaceDynamics : System.Web.Services.WebService
         public string CodigoBanco { get; set; }
         public string CodigoTipoBanco { get; set; }
         public string NumeroCuenta { get; set; }
+    }
+
+
+    [WebMethod(Description = "Listado de catedraticos que estan en Oracle pero no en dynamics para UG: Fecha:dd/MM/YYYY", EnableSession = false)]
+    public DataSet CatedrativosFaltantesUG(string fecha, string origen)
+    {
+        string sql = "";
+
+        if (origen.ToUpper() == "IDEA")
+        {
+            sql = "SELECT tutor CATEDRATICO ,NVL (NOMBRE, '<>') NOMBRE ";
+            sql += " FROM DYNAMICS.PAGOSIDEA";
+            sql += " WHERE FPAGO <= TO_DATE ('" + fecha + "', 'DD/MM/YYYY')";
+            sql += " Group by tutor, ";
+            sql += " NVL (NOMBRE, '<>')";
+        }
+        else
+        {
+            sql = "SELECT   CATEDRATICO,NVL (NOMBRE, '<>') NOMBRE ";
+            sql += " FROM DYNAMICS.PAGOSUGA";
+            sql += " WHERE FECHAPAGO <= TO_DATE ('" + fecha + "', 'DD/MM/YYYY')";
+            /*switch (origen.ToUpper())
+			{
+				
+				case "UGA": sql += " AND ORIGEN IS NULL AND TIPONOMINA != '8'";
+					break;
+					
+				case "INAP": sql += " AND ORIGEN = 'INAP'";
+					break;
+				
+				case "IDEANOM8": sql += " AND ORIGEN IS NULL AND TIPONOMINA = '8'";
+					break;
+
+				default:
+					throw new Exception(string.Concat("Interfaz " + origen + " no soportada"));
+					break;
+			}*/
+            sql += " Group by CATEDRATICO, ";
+            sql += " NVL (NOMBRE, '<>')";
+        }
+
+        conn.Open();
+
+        OracleDataAdapter da = new OracleDataAdapter(sql, cn);
+        DataTable dt = new DataTable();
+        da.Fill(dt);
+
+        SqlCommand cmd = new SqlCommand("", conn);
+
+        DataTable table = new DataTable("cat");
+        DataColumn column = new DataColumn();
+        column.DataType = System.Type.GetType("System.String");
+        column.AllowDBNull = false;
+        column.Caption = "CATEDRATICO";
+        column.ColumnName = "CATEDRATICO";
+
+        DataColumn column2 = new DataColumn();
+        column2.DataType = System.Type.GetType("System.String");
+        column2.AllowDBNull = false;
+        column2.Caption = "NOMBRE";
+        column2.ColumnName = "NOMBRE";
+
+        table.Columns.Add(column);
+        table.Columns.Add(column2);
+
+        string codigos = "";
+
+        foreach (DataRow row in dt.Rows)
+        {
+            switch (origen.ToUpper())
+            {
+                case "IDEA":
+                    cmd = new SqlCommand("dbo.buscaDocenteIDEA", conn);
+                    break;
+
+                case "UGA":
+                    cmd = new SqlCommand("dbo.buscaDocenteUGA", conn);
+                    break;
+
+                default:
+                    throw new Exception(string.Concat("Interfaz " + origen + " no soportada"));
+                    break;
+            }
+
+            SqlParameter parm = new SqlParameter("@iEmplId", row["CATEDRATICO"]);
+            cmd.Parameters.Add(parm);
+            cmd.CommandType = CommandType.StoredProcedure;
+            SqlDataReader rdr = cmd.ExecuteReader();
+            int contar = 0;
+            while (rdr.Read())
+            {
+                contar = Convert.ToInt32(rdr["CONTEO"]);
+            }
+
+            if (contar == 0)
+            {
+                DataRow r = table.NewRow();
+                r["CATEDRATICO"] = row["CATEDRATICO"];
+                r["NOMBRE"] = row["NOMBRE"];
+                table.Rows.Add(r);
+
+            }
+        }
+
+        DataSet ds = new DataSet();
+        ds.Tables.Add(table);
+        cn.Close();
+        conn.Close();
+
+        return ds;
+    }
+
+
+    [WebMethod(Description = "Listado de carreras que estan en Oracle pero no en dynamics para UG: Fecha:dd/MM/YYYY", EnableSession = false)]
+    public DataSet CarrerasFaltantesUG(string fecha, string origen)
+    {
+        string sql = "";
+
+        switch (origen.ToUpper())
+        {
+            case "IDEA":
+                sql = "SELECT CARRERA ";
+                sql += " FROM DYNAMICS.PAGOSIDEA";
+                sql += " Group by CARRERA ";
+
+                break;
+
+            case "UGA":
+
+                sql = "SELECT   CARRERA ";
+                sql += " FROM DYNAMICS.PAGOSUGADETALLE a, DYNAMICS.PAGOSUGA b";
+                sql += " WHERE a.NOMINA = b.NOMINA AND a.CORRELATIVO = b.CORRELATIVO";
+                sql += " and b.FECHAPAGO <= TO_DATE ('" + fecha + "', 'DD/MM/YYYY')";
+                sql += " Group by CARRERA ";
+                break;
+
+            default:
+                throw new Exception(string.Concat("Interfaz " + origen + " no soportada"));
+                break;
+        }
+
+        conn.Open();
+
+        OracleDataAdapter da = new OracleDataAdapter(sql, cn);
+        DataTable dt = new DataTable();
+
+        da.Fill(dt);
+
+        SqlCommand cmd = new SqlCommand("", conn);
+
+        DataTable table = new DataTable("cat");
+        DataColumn column = new DataColumn();
+        column.DataType = System.Type.GetType("System.String");
+        column.AllowDBNull = false;
+        column.Caption = "CARRERA";
+        column.ColumnName = "CARRERA";
+
+        table.Columns.Add(column);
+
+        string codigos = "";
+
+        foreach (DataRow row in dt.Rows)
+        {
+            cmd = new SqlCommand("dbo.buscaCarreras", conn);
+            SqlParameter parm = new SqlParameter("@iCareersId", row["CARRERA"]);
+            cmd.Parameters.Add(parm);
+            cmd.CommandType = CommandType.StoredProcedure;
+            SqlDataReader rdr = cmd.ExecuteReader();
+            int contar = 0;
+            while (rdr.Read())
+            {
+                contar = Convert.ToInt32(rdr["CONTEO"]);
+            }
+
+            if (contar == 0)
+            {
+                DataRow r = table.NewRow();
+                r["CARRERA"] = row["CARRERA"];
+                table.Rows.Add(r);
+
+            }
+        }
+
+
+        DataSet ds = new DataSet();
+
+        ds.Tables.Add(table);
+
+        //sql = "select COUNT(*) from iEmplVendCodeRefTable where IEMPLIDUGA in(" + codigos +")";
+
+        cn.Close();
+        conn.Close();
+
+        return ds;
     }
 }
