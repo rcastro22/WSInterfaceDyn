@@ -1197,6 +1197,7 @@ public class WSReceiptsGeneration : System.Web.Services.WebService
 
     [WebMethod]
     // 
+    // 15-04-2020, RC, Metodo en desuso porque se consulta en el API de DG
     public string obtenerExpediente(string _emplId)
     {
         string fileEnc = "";
@@ -1240,6 +1241,7 @@ public class WSReceiptsGeneration : System.Web.Services.WebService
 
 
     [WebMethod]
+    // 15-04-2020, RC, Metodo en desuso porque se consulta en el API de DG
     public string obtenerRTU(string _codpers)
     {
         string fileEnc = "";
@@ -1279,6 +1281,7 @@ public class WSReceiptsGeneration : System.Web.Services.WebService
         return fileEnc;
     }
 
+    // 15-04-2020, RC, Metodo en desuso porque se consulta en el API de DG
     protected string encripta(decimal id)
     {
         EncryptedQueryString args = new EncryptedQueryString();
