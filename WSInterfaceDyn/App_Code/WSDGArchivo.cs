@@ -84,4 +84,24 @@ public class WSDGArchivo : System.Web.Services.WebService
         return fileEnc;
     }
 
+
+    [WebMethod(Description = "Busca archivo de la carpeta repositorio y lo carga a digitalización", EnableSession = false)]
+    // 10-06-2016, RC, Busca archivo de la carpeta repositorio y lo carga a digitalización
+    public string SubirArchivo(string _nombreArchivo)
+    {
+        string[] parm = _nombreArchivo.Split('|');
+        try
+        {
+            System.Byte[] nuevoByte = System.IO.File.ReadAllBytes(@"C:\TransferDocs\" + parm[0].ToString());
+            WSExpediente.Service ser1 = new WSExpediente.Service();
+            ser1.Guardar("PR", 53, parm[0].ToString(), "application/pdf", nuevoByte, parm[1].ToString());
+            System.IO.File.Delete(@"C:\TransferDocs\" + parm[0].ToString());
+        }
+        catch (System.IO.IOException e)
+        {
+            return e.Message;
+        }
+        return "Ok";
+    }
+
 }

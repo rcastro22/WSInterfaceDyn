@@ -17,7 +17,7 @@ using System.Data;
 
 public class WSInterfaceDynamics : System.Web.Services.WebService
 {
-    SqlConnection conn = new SqlConnection("Data Source=srvdynamicsax;Initial Catalog=DAXPRODGALILEO;Integrated Security=True;MultipleActiveResultSets=true");
+    SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["sqldax"].ConnectionString);
     OracleConnection cn = new OracleConnection(ConfigurationManager.ConnectionStrings["galileo"].ConnectionString);
     public WSInterfaceDynamics()
     {
@@ -945,7 +945,7 @@ public class WSInterfaceDynamics : System.Web.Services.WebService
 
     [WebMethod(Description = "Cambiar numero y tipo de cuenta bancario de Docentes en Dynamics", EnableSession = false)]
     // 09-01-2017, Roberto Castro, Cambiar numero y tipo de cuenta bancario de Docentes en Dynamics
-    public String cambiaCuentaBancariaDocentesDAX(string _nit, string _codigo, string _banco, string _tipoCuenta, string _numeroCuenta, string _usuarioOracle)
+    public String cambiaCuentaBancariaDocentesDAX(string _nit, string _codigo, string _banco, string _tipoCuenta, string _numeroCuenta, string _email, string _usuarioOracle)
     {
         string ret = "";
         string date = "";
@@ -975,8 +975,9 @@ public class WSInterfaceDynamics : System.Web.Services.WebService
                 axRecord.set_Field("BankAccountEmpl", _numeroCuenta);
                 axRecord.set_Field("BankAccountTransId", _banco);
                 axRecord.set_Field("TypeBankAccountId", _tipoCuenta);
-                axRecord.set_Field("TypeBankAccountId", _tipoCuenta);
                 axRecord.set_Field("ModifiedDateCuentaBI", DateTime.Now);
+                axRecord.set_Field("email", _email);
+                axRecord.set_Field("IPaymMode", (_numeroCuenta == "" || _numeroCuenta == null ? "CK-NOM" : "TR-NOM"));
                 axRecord.set_Field("UsuarioOracle", _usuarioOracle);
 
                 // Actualiza el registro en Dynamics
