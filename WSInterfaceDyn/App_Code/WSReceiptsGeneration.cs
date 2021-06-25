@@ -22,7 +22,7 @@ using System.IO;
 // [System.Web.Script.Services.ScriptService]
 public class WSReceiptsGeneration : System.Web.Services.WebService
 {
-    SqlConnection conn = new SqlConnection("Data Source=srvdynamicsax;Initial Catalog=DAXPRODGALILEO;Integrated Security=True;MultipleActiveResultSets=true");
+    SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["sqldax"].ConnectionString);
     OracleConnection cn = new OracleConnection(ConfigurationManager.ConnectionStrings["galileo"].ConnectionString);
     public WSReceiptsGeneration()
     {
