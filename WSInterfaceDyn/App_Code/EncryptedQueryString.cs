@@ -182,4 +182,16 @@ public class EncryptedQueryString : Dictionary<string, string>
 
         return results;
     }
+
+
+    /// <summary>
+    /// Encripta a base64
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public string Base64Encode(string plainText)
+    {
+        var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
+        return System.Convert.ToBase64String(plainTextBytes);
+    }
 }

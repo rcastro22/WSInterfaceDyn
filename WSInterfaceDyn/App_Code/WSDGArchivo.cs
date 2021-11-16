@@ -30,6 +30,12 @@ public class WSDGArchivo : System.Web.Services.WebService
         return res;
     }
 
+    protected string encripta2(decimal id)
+    {
+        EncryptedQueryString args = new EncryptedQueryString();
+        return args.Base64Encode(id.ToString());
+    }
+
     [WebMethod(Description = "Obtiene el id encriptado del arhcivo", EnableSession = false)]
     // 12-04-2020, RC, Obtiene el id encriptado del arhcivo
     public string obtenerIdArchivo(string _application, int _category, string _labels)
@@ -79,7 +85,7 @@ public class WSDGArchivo : System.Web.Services.WebService
                 }
             }
 
-            fileEnc = encripta(Convert.ToDecimal(dsNew.Tables[0].Rows[filaFechaMaxima - 1][0]));
+            fileEnc = encripta2(Convert.ToDecimal(dsNew.Tables[0].Rows[filaFechaMaxima - 1][0]));
         }
         return fileEnc;
     }

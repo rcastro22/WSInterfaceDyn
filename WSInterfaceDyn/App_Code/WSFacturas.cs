@@ -325,7 +325,7 @@ public class WSFacturas : System.Web.Services.WebService
 
     [WebMethod(Description = "Inserta registros en la tabla HPAGOSUGADETALLE", EnableSession = false)]
     // 15-06-2021, Roberto Castro, Inserta registros en la tabla HPAGOSUGADETALLE
-    public int insertHpagosUgaDetalle(string _nomina, string _correlativo, string _carrera)
+    public int insertHpagosUgaDetalle(string _nomina, string _correlativo)
     {
         int contador = 0;
         try
@@ -338,7 +338,6 @@ public class WSFacturas : System.Web.Services.WebService
             sqlInsert += "FROM DYNAMICS.PAGOSUGADETALLE ";
             sqlInsert += "WHERE NOMINA = " + _nomina + " ";
             sqlInsert += "AND CORRELATIVO = " + _correlativo + " ";
-            sqlInsert += "AND CARRERA = '" + _carrera + "'";
 
             cn.Open();
             cmd = new OracleCommand(sqlInsert, cn);
@@ -357,7 +356,7 @@ public class WSFacturas : System.Web.Services.WebService
 
     [WebMethod(Description = "Elimina registros en la tabla PAGOSUGADETALLE", EnableSession = false)]
     // 15-06-2021, Roberto Castro, Elimina registros en la tabla PAGOSUGADETALLE
-    public int deletePagosUgaDetalle(string _nomina, string _correlativo, string _carrera)
+    public int deletePagosUgaDetalle(string _nomina, string _correlativo)
     {
         int contador = 0;
         try
@@ -368,7 +367,6 @@ public class WSFacturas : System.Web.Services.WebService
             sqlDelete = "DELETE FROM DYNAMICS.PAGOSUGADETALLE ";
             sqlDelete += "WHERE NOMINA = " + _nomina + " ";
             sqlDelete += "AND CORRELATIVO = " + _correlativo + " ";
-            sqlDelete += "AND CARRERA = '" + _carrera + "'";
 
             cn.Open();
             cmd = new OracleCommand(sqlDelete, cn);
