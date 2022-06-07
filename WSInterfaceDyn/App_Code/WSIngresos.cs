@@ -414,7 +414,7 @@ public class WSIngresos : System.Web.Services.WebService
 
         foreach (DataRow row in dt.Rows)
         {
-            cmd = new SqlCommand("dbo.buscaCarreras", conn);
+            cmd = new SqlCommand("dbo.buscaCarrerasIngresos", conn);
             SqlParameter parm = new SqlParameter("@iCareersId", row["CARRERA"]);
             cmd.Parameters.Add(parm);
             cmd.CommandType = CommandType.StoredProcedure;

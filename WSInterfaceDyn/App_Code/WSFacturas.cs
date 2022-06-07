@@ -105,6 +105,44 @@ public class WSFacturas : System.Web.Services.WebService
         }
     }
 
+    [WebMethod(Description = "Valida que la factura no exista en Dynamics por NIT", EnableSession = false)]
+    // 07-04-2020, Roberto Castro, Valida que la factura no exista en Dynamics
+    public bool validarFacturaNit(string _nit, string _facturaserie, string _facturanumero)
+    {
+        bool ret;
+        Axapta ax = new Axapta();
+        try
+        {
+            AxaptaRecord axRecord;
+            string tableName = "vendInvoiceJour";
+            string strQuery = String.Format("select InvoiceDate,InvoiceAmount from %1 index hint InvoiceIdx where %1.VATNum == '{0}' && %1.InvoiceId == '{1}-{2}' && %1.InvoiceAmount != 0", _nit, _facturaserie, _facturanumero);
+
+            ax.Logon(null, null, null, null);
+            ax.TTSBegin();
+            axRecord = ax.CreateAxaptaRecord(tableName);
+            axRecord.ExecuteStmt(strQuery);
+            if (axRecord.Found)
+            {
+                ret = true;
+            }
+            else
+            {
+                ret = false;
+            }
+
+            ax.TTSCommit();
+            ax.Logoff();
+
+            return ret;
+        }
+        catch (Exception e)
+        {
+            ax.TTSAbort();
+            ax.Logoff();
+            return false;
+        }
+    }
+
     [WebMethod(Description = "Obtiene la informacion bancaria del docente", EnableSession = false)]
     // 07-04-2020, Roberto Castro, Obtiene la informacion bancaria del docente
     public DataTable infoBancariaDocente(string _codpers)

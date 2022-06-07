@@ -70,303 +70,310 @@ public class WSReceiptsGeneration : System.Web.Services.WebService
                 rdr["UnitPrice"]);*/
             try
             {
-                Document document = new Document(new iTextSharp.text.Rectangle(612f, 396.27f));
-                document.SetMargins(40, 40, 35, 5);
-                document.PageSize.Rotate();
-                document.AddAuthor("Universidad Galileo");
-                document.AddCreator("Universidad Galileo");
-                document.AddCreationDate();
-                document.AddTitle("Recibo de Pago");
-                document.AddSubject("Recibo de pago");
-                document.AddKeywords("Recibo ; Pago ; Boleta");
-                byte[] arch = null;
+                sequencialMonth = rdr["SEQUENCIALMONTH"].ToString();
 
-                using (MemoryStream inStream = new MemoryStream())
+                if (validaExisteBoleta(sequencialMonth, rdr["PICTUREID"].ToString()))
                 {
-                    PdfWriter writer = PdfWriter.GetInstance(document, inStream);
 
-                    document.Open();
+                    Document document = new Document(new iTextSharp.text.Rectangle(612f, 396.27f));
+                    document.SetMargins(40, 40, 35, 5);
+                    document.PageSize.Rotate();
+                    document.AddAuthor("Universidad Galileo");
+                    document.AddCreator("Universidad Galileo");
+                    document.AddCreationDate();
+                    document.AddTitle("Recibo de Pago");
+                    document.AddSubject("Recibo de pago");
+                    document.AddKeywords("Recibo ; Pago ; Boleta");
+                    byte[] arch = null;
 
-                    //Capa 1 - Imagenes
-                    PdfLayer layer = new PdfLayer("MyLayer1", writer);
-                    PdfContentByte cb = writer.DirectContent;
-                    cb.BeginLayer(layer);
-                    iTextSharp.text.Image logoPeq = iTextSharp.text.Image.GetInstance(@"C:\CS\Img\LogoGalileoPequeño.png");
-                    logoPeq.SetAbsolutePosition(40, document.PageSize.Height - Convert.ToInt16(logoPeq.Height * 0.4) - 20);
-                    logoPeq.ScalePercent(40);
-                    cb.AddImage(logoPeq);
-
-                    iTextSharp.text.Image logoGran = iTextSharp.text.Image.GetInstance(@"C:\CS\Img\LogoGalileoGrande.png");
-                    logoGran.SetAbsolutePosition((document.PageSize.Width / 2) - (Convert.ToInt16(logoGran.Width * 0.4) / 2), (document.PageSize.Height / 2) - (Convert.ToInt16(logoGran.Height * 0.4) / 2));
-                    logoGran.ScalePercent(40);
-                    cb.AddImage(logoGran);
-                    cb.EndLayer();
-                    //Fin capa 1
-
-                    iTextSharp.text.Font myfont1 = new iTextSharp.text.Font(FontFactory.GetFont(FontFactory.HELVETICA, 8, iTextSharp.text.Font.NORMAL));
-
-                    Phrase myPhrase;
-
-                    //Capa 2 - Datos
-                    layer = new PdfLayer("MyLayer2", writer);
-                    cb.BeginLayer(layer);
-                    Paragraph myParagraph = new Paragraph();
-                    myPhrase = new Phrase("Universidad Galileo", new iTextSharp.text.Font(FontFactory.GetFont(FontFactory.HELVETICA, 16, iTextSharp.text.Font.BOLD)));
-                    myParagraph.Add(myPhrase);
-                    myParagraph.Alignment = Element.ALIGN_CENTER;
-                    document.Add(myParagraph);
-
-                    myParagraph = new Paragraph();
-                    myPhrase = new Phrase("RECIBO DE PAGO", new iTextSharp.text.Font(FontFactory.GetFont(FontFactory.HELVETICA, 15, iTextSharp.text.Font.BOLD)));
-                    myParagraph.Alignment = Element.ALIGN_CENTER;
-                    myParagraph.Add(myPhrase);
-                    document.Add(myParagraph);
-
-
-                    SqlCommand cmdInfo = new SqlCommand("dbo.PayRollTransInfo", conn);
-                    cmdInfo.Parameters.Add(new SqlParameter("@transId", transId));
-                    cmdInfo.CommandType = CommandType.StoredProcedure;
-                    SqlDataReader rdrInfo = cmdInfo.ExecuteReader();
-                    while (rdrInfo.Read())
+                    using (MemoryStream inStream = new MemoryStream())
                     {
+                        PdfWriter writer = PdfWriter.GetInstance(document, inStream);
+
+                        document.Open();
+
+                        //Capa 1 - Imagenes
+                        PdfLayer layer = new PdfLayer("MyLayer1", writer);
+                        PdfContentByte cb = writer.DirectContent;
+                        cb.BeginLayer(layer);
+                        iTextSharp.text.Image logoPeq = iTextSharp.text.Image.GetInstance(@"C:\CS\Img\LogoGalileoPequeño.png");
+                        logoPeq.SetAbsolutePosition(40, document.PageSize.Height - Convert.ToInt16(logoPeq.Height * 0.4) - 20);
+                        logoPeq.ScalePercent(40);
+                        cb.AddImage(logoPeq);
+
+                        iTextSharp.text.Image logoGran = iTextSharp.text.Image.GetInstance(@"C:\CS\Img\LogoGalileoGrande.png");
+                        logoGran.SetAbsolutePosition((document.PageSize.Width / 2) - (Convert.ToInt16(logoGran.Width * 0.4) / 2), (document.PageSize.Height / 2) - (Convert.ToInt16(logoGran.Height * 0.4) / 2));
+                        logoGran.ScalePercent(40);
+                        cb.AddImage(logoGran);
+                        cb.EndLayer();
+                        //Fin capa 1
+
+                        iTextSharp.text.Font myfont1 = new iTextSharp.text.Font(FontFactory.GetFont(FontFactory.HELVETICA, 8, iTextSharp.text.Font.NORMAL));
+
+                        Phrase myPhrase;
+
+                        //Capa 2 - Datos
+                        layer = new PdfLayer("MyLayer2", writer);
+                        cb.BeginLayer(layer);
+                        Paragraph myParagraph = new Paragraph();
+                        myPhrase = new Phrase("Universidad Galileo", new iTextSharp.text.Font(FontFactory.GetFont(FontFactory.HELVETICA, 16, iTextSharp.text.Font.BOLD)));
+                        myParagraph.Add(myPhrase);
+                        myParagraph.Alignment = Element.ALIGN_CENTER;
+                        document.Add(myParagraph);
+
                         myParagraph = new Paragraph();
-                        myPhrase = new Phrase(rdrInfo["DESCRIPTION"] + " del " + Convert.ToDateTime(rdrInfo["FROMDATE"]).ToString("dd/MM/yyyy") + " al " + Convert.ToDateTime(rdrInfo["TODATE"]).ToString("dd/MM/yyyy"), new iTextSharp.text.Font(FontFactory.GetFont(FontFactory.HELVETICA, 14, iTextSharp.text.Font.BOLD)));
+                        myPhrase = new Phrase("RECIBO DE PAGO", new iTextSharp.text.Font(FontFactory.GetFont(FontFactory.HELVETICA, 15, iTextSharp.text.Font.BOLD)));
                         myParagraph.Alignment = Element.ALIGN_CENTER;
                         myParagraph.Add(myPhrase);
                         document.Add(myParagraph);
-                    }
 
 
-                    sequencialMonth = rdr["SEQUENCIALMONTH"].ToString();
-                    /*if (sequencialMonth == "")
-                    {                       
-                        ax.Logon(null, null, null, null);
-                        try
-                        {                            
-                            ParmsClass[0] = Convert.ToString(transId);
-                            ParmsClass[1] = rdr["EMPLID"].ToString();
-                            sequencialMonth = Convert.ToString(ax.CallStaticClassMethod("WSInterface", "generateNumberReceipt", ParmsClass));
-                            ax.Logoff();
-                        }
-                        catch (Exception ex)
+                        SqlCommand cmdInfo = new SqlCommand("dbo.PayRollTransInfo", conn);
+                        cmdInfo.Parameters.Add(new SqlParameter("@transId", transId));
+                        cmdInfo.CommandType = CommandType.StoredProcedure;
+                        SqlDataReader rdrInfo = cmdInfo.ExecuteReader();
+                        while (rdrInfo.Read())
                         {
-                            ax.Logoff();
-                            sequencialMonth = "Number Error";
+                            myParagraph = new Paragraph();
+                            myPhrase = new Phrase(rdrInfo["DESCRIPTION"] + " del " + Convert.ToDateTime(rdrInfo["FROMDATE"]).ToString("dd/MM/yyyy") + " al " + Convert.ToDateTime(rdrInfo["TODATE"]).ToString("dd/MM/yyyy"), new iTextSharp.text.Font(FontFactory.GetFont(FontFactory.HELVETICA, 14, iTextSharp.text.Font.BOLD)));
+                            myParagraph.Alignment = Element.ALIGN_CENTER;
+                            myParagraph.Add(myPhrase);
+                            document.Add(myParagraph);
                         }
-                    }*/
-
-                    myParagraph = new Paragraph();
-                    myPhrase = new Phrase("Recibo No.: " + sequencialMonth, myfont1);
-                    myParagraph.Alignment = Element.ALIGN_RIGHT;
-                    myParagraph.Add(myPhrase); myParagraph.Leading = 24f;
-                    document.Add(myParagraph);
-
-                    myParagraph = new Paragraph();
-                    myPhrase = new Phrase(" ");
-                    myParagraph.Alignment = Element.ALIGN_LEFT;
-                    myParagraph.Add(myPhrase); myParagraph.Leading = 10.0f;
-                    document.Add(myParagraph);
-
-                    //////////////////////// TABLA ENCABEZADO //////////////////////////
-                    PdfPCell cell2 = new PdfPCell();
-                    cell2.BorderWidth = 0;
-                    iTextSharp.text.pdf.PdfPTable tableHead = new PdfPTable(2);
-                    tableHead.TotalWidth = document.PageSize.Width - 80;
-                    tableHead.SetWidths(new Single[] { 3.0F, 3.0F });
-                    tableHead.LockedWidth = true;
-
-                    myPhrase = new Phrase("Empleado: " + rdr["EMPLID"], myfont1);
-                    cell2.Phrase = myPhrase; cell2.HorizontalAlignment = Element.ALIGN_LEFT;
-                    tableHead.AddCell(cell2);
-
-                    myPhrase = new Phrase("Cuentas bancarias del empleado: " + rdr["BANKACCOUNTEMPL"], myfont1);
-                    cell2.Phrase = myPhrase; cell2.HorizontalAlignment = Element.ALIGN_RIGHT;
-                    tableHead.AddCell(cell2);
-
-                    myPhrase = new Phrase("Nombre: " + rdr["EMPLNAME"], myfont1);
-                    cell2.Phrase = myPhrase; cell2.HorizontalAlignment = Element.ALIGN_LEFT;
-                    tableHead.AddCell(cell2);
-
-                    myPhrase = new Phrase("Salario líquido: " + Convert.ToString(decimal.Round(Convert.ToDecimal(rdr["LIQUID"]), 2).ToString("###,###.00")), myfont1);
-                    cell2.Phrase = myPhrase; cell2.HorizontalAlignment = Element.ALIGN_RIGHT;
-                    tableHead.AddCell(cell2);
-
-                    myPhrase = new Phrase("Departamento: " + rdr["DESCRIPTION"], myfont1);
-                    cell2.Phrase = myPhrase; cell2.HorizontalAlignment = Element.ALIGN_LEFT;
-                    tableHead.AddCell(cell2);
-
-                    myPhrase = new Phrase();
-                    cell2.Phrase = myPhrase;
-                    tableHead.AddCell(cell2);
-
-                    document.Add(tableHead);
-                    //////////////////////// TABLA ENCABEZADO //////////////////////////
 
 
-                    ////////////////////////// TABLA DATOS /////////////////////////////
-                    iTextSharp.text.pdf.PdfPTable table = new PdfPTable(3);
-                    iTextSharp.text.pdf.PdfPTable table2 = new PdfPTable(3);
-                    iTextSharp.text.pdf.PdfPTable table3 = new PdfPTable(2);
-                    table.TotalWidth = document.PageSize.Width - 80;
-                    table.LockedWidth = true;
 
-                    table.SetWidths(new Single[] { 2.0F, 0.1f, 1.5F });           //Tabla Principal
-                    table2.SetWidths(new Single[] { 3.0F, 1.0F, 1.0F });    //Tabla Ingresos
-                    table3.SetWidths(new Single[] { 2.0F, 1.0F });          //Tabla Deducciones
+                        /*if (sequencialMonth == "")
+                        {                       
+                            ax.Logon(null, null, null, null);
+                            try
+                            {                            
+                                ParmsClass[0] = Convert.ToString(transId);
+                                ParmsClass[1] = rdr["EMPLID"].ToString();
+                                sequencialMonth = Convert.ToString(ax.CallStaticClassMethod("WSInterface", "generateNumberReceipt", ParmsClass));
+                                ax.Logoff();
+                            }
+                            catch (Exception ex)
+                            {
+                                ax.Logoff();
+                                sequencialMonth = "Number Error";
+                            }
+                        }*/
 
-                    PdfPCell cell;
+                        myParagraph = new Paragraph();
+                        myPhrase = new Phrase("Recibo No.: " + sequencialMonth, myfont1);
+                        myParagraph.Alignment = Element.ALIGN_RIGHT;
+                        myParagraph.Add(myPhrase); myParagraph.Leading = 24f;
+                        document.Add(myParagraph);
 
-                    // Encabezado ingresos
-                    myPhrase = new Phrase("INGRESOS", myfont1);
-                    cell = new PdfPCell(myPhrase); cell.HorizontalAlignment = Element.ALIGN_LEFT; cell.BorderWidth = 0; cell.BorderWidthBottom = 0.5f;
-                    table2.AddCell(cell);
-                    myPhrase = new Phrase("CANT.", myfont1);
-                    cell = new PdfPCell(myPhrase); cell.HorizontalAlignment = Element.ALIGN_RIGHT; cell.BorderWidth = 0; cell.BorderWidthBottom = 0.5f;
-                    table2.AddCell(cell);
-                    myPhrase = new Phrase("MONTO", myfont1);
-                    cell = new PdfPCell(myPhrase); cell.HorizontalAlignment = Element.ALIGN_RIGHT; cell.BorderWidth = 0; cell.BorderWidthBottom = 0.5f;
-                    table2.AddCell(cell);
+                        myParagraph = new Paragraph();
+                        myPhrase = new Phrase(" ");
+                        myParagraph.Alignment = Element.ALIGN_LEFT;
+                        myParagraph.Add(myPhrase); myParagraph.Leading = 10.0f;
+                        document.Add(myParagraph);
 
-                    // Obtencion de datos - Ingresos
-                    SqlCommand cmd2 = new SqlCommand("dbo.TransReceipt", conn);
-                    cmd2.Parameters.Add("@transId", SqlDbType.NVarChar, 10).Value = transId;
-                    cmd2.Parameters.Add("@emplId", SqlDbType.NVarChar, 10).Value = rdr["EMPLID"];
-                    cmd2.Parameters.Add("@typeElement", SqlDbType.Int).Value = 0;
-                    cmd2.CommandType = CommandType.StoredProcedure;
-                    SqlDataReader qrdr = cmd2.ExecuteReader();
-                    //conn.Close();
-                    while (qrdr.Read())
-                    {
-                        myPhrase = new Phrase(Convert.ToString(qrdr["CONCEPT"]), myfont1);
-                        cell = new PdfPCell(myPhrase); cell.BorderWidth = 0;
+                        //////////////////////// TABLA ENCABEZADO //////////////////////////
+                        PdfPCell cell2 = new PdfPCell();
+                        cell2.BorderWidth = 0;
+                        iTextSharp.text.pdf.PdfPTable tableHead = new PdfPTable(2);
+                        tableHead.TotalWidth = document.PageSize.Width - 80;
+                        tableHead.SetWidths(new Single[] { 3.0F, 3.0F });
+                        tableHead.LockedWidth = true;
+
+                        myPhrase = new Phrase("Empleado: " + rdr["EMPLID"], myfont1);
+                        cell2.Phrase = myPhrase; cell2.HorizontalAlignment = Element.ALIGN_LEFT;
+                        tableHead.AddCell(cell2);
+
+                        myPhrase = new Phrase("Cuentas bancarias del empleado: " + rdr["BANKACCOUNTEMPL"], myfont1);
+                        cell2.Phrase = myPhrase; cell2.HorizontalAlignment = Element.ALIGN_RIGHT;
+                        tableHead.AddCell(cell2);
+
+                        myPhrase = new Phrase("Nombre: " + rdr["EMPLNAME"], myfont1);
+                        cell2.Phrase = myPhrase; cell2.HorizontalAlignment = Element.ALIGN_LEFT;
+                        tableHead.AddCell(cell2);
+
+                        myPhrase = new Phrase("Salario líquido: " + Convert.ToString(decimal.Round(Convert.ToDecimal(rdr["LIQUID"]), 2).ToString("###,###.00")), myfont1);
+                        cell2.Phrase = myPhrase; cell2.HorizontalAlignment = Element.ALIGN_RIGHT;
+                        tableHead.AddCell(cell2);
+
+                        myPhrase = new Phrase("Departamento: " + rdr["DESCRIPTION"], myfont1);
+                        cell2.Phrase = myPhrase; cell2.HorizontalAlignment = Element.ALIGN_LEFT;
+                        tableHead.AddCell(cell2);
+
+                        myPhrase = new Phrase();
+                        cell2.Phrase = myPhrase;
+                        tableHead.AddCell(cell2);
+
+                        document.Add(tableHead);
+                        //////////////////////// TABLA ENCABEZADO //////////////////////////
+
+
+                        ////////////////////////// TABLA DATOS /////////////////////////////
+                        iTextSharp.text.pdf.PdfPTable table = new PdfPTable(3);
+                        iTextSharp.text.pdf.PdfPTable table2 = new PdfPTable(3);
+                        iTextSharp.text.pdf.PdfPTable table3 = new PdfPTable(2);
+                        table.TotalWidth = document.PageSize.Width - 80;
+                        table.LockedWidth = true;
+
+                        table.SetWidths(new Single[] { 2.0F, 0.1f, 1.5F });           //Tabla Principal
+                        table2.SetWidths(new Single[] { 3.0F, 1.0F, 1.0F });    //Tabla Ingresos
+                        table3.SetWidths(new Single[] { 2.0F, 1.0F });          //Tabla Deducciones
+
+                        PdfPCell cell;
+
+                        // Encabezado ingresos
+                        myPhrase = new Phrase("INGRESOS", myfont1);
+                        cell = new PdfPCell(myPhrase); cell.HorizontalAlignment = Element.ALIGN_LEFT; cell.BorderWidth = 0; cell.BorderWidthBottom = 0.5f;
                         table2.AddCell(cell);
-                        myPhrase = new Phrase(Convert.ToString(decimal.Round(Convert.ToDecimal(qrdr["QUANTITY"]), 2)), myfont1);
-                        cell = new PdfPCell(myPhrase); cell.HorizontalAlignment = Element.ALIGN_RIGHT; cell.BorderWidth = 0;
+                        myPhrase = new Phrase("CANT.", myfont1);
+                        cell = new PdfPCell(myPhrase); cell.HorizontalAlignment = Element.ALIGN_RIGHT; cell.BorderWidth = 0; cell.BorderWidthBottom = 0.5f;
                         table2.AddCell(cell);
-                        myPhrase = new Phrase(Convert.ToString(decimal.Round(Convert.ToDecimal(qrdr["AMOUNT"]), 2).ToString("###,###.00")), myfont1);
-                        cell = new PdfPCell(myPhrase); cell.HorizontalAlignment = Element.ALIGN_RIGHT; cell.BorderWidth = 0;
+                        myPhrase = new Phrase("MONTO", myfont1);
+                        cell = new PdfPCell(myPhrase); cell.HorizontalAlignment = Element.ALIGN_RIGHT; cell.BorderWidth = 0; cell.BorderWidthBottom = 0.5f;
                         table2.AddCell(cell);
 
-                    }
-                    qrdr.Close();
+                        // Obtencion de datos - Ingresos
+                        SqlCommand cmd2 = new SqlCommand("dbo.TransReceipt", conn);
+                        cmd2.Parameters.Add("@transId", SqlDbType.NVarChar, 10).Value = transId;
+                        cmd2.Parameters.Add("@emplId", SqlDbType.NVarChar, 10).Value = rdr["EMPLID"];
+                        cmd2.Parameters.Add("@typeElement", SqlDbType.Int).Value = 0;
+                        cmd2.CommandType = CommandType.StoredProcedure;
+                        SqlDataReader qrdr = cmd2.ExecuteReader();
+                        //conn.Close();
+                        while (qrdr.Read())
+                        {
+                            myPhrase = new Phrase(Convert.ToString(qrdr["CONCEPT"]), myfont1);
+                            cell = new PdfPCell(myPhrase); cell.BorderWidth = 0;
+                            table2.AddCell(cell);
+                            myPhrase = new Phrase(Convert.ToString(decimal.Round(Convert.ToDecimal(qrdr["QUANTITY"]), 2)), myfont1);
+                            cell = new PdfPCell(myPhrase); cell.HorizontalAlignment = Element.ALIGN_RIGHT; cell.BorderWidth = 0;
+                            table2.AddCell(cell);
+                            myPhrase = new Phrase(Convert.ToString(decimal.Round(Convert.ToDecimal(qrdr["AMOUNT"]), 2).ToString("###,###.00")), myfont1);
+                            cell = new PdfPCell(myPhrase); cell.HorizontalAlignment = Element.ALIGN_RIGHT; cell.BorderWidth = 0;
+                            table2.AddCell(cell);
 
-                    // Encabezado deducciones
-                    myPhrase = new Phrase("DEDUCCIONES", myfont1);
-                    cell = new PdfPCell(myPhrase); cell.BorderWidth = 0; cell.BorderWidthBottom = 0.5f;
-                    table3.AddCell(cell);
-                    myPhrase = new Phrase("MONTO", myfont1);
-                    cell = new PdfPCell(myPhrase); cell.HorizontalAlignment = Element.ALIGN_RIGHT; cell.BorderWidth = 0; cell.BorderWidthBottom = 0.5f;
-                    table3.AddCell(cell);
+                        }
+                        qrdr.Close();
 
-                    // Obetencion de datos - deducciones
-                    cmd2 = new SqlCommand("dbo.TransReceipt", conn);
-                    cmd2.Parameters.Add("@transId", SqlDbType.NVarChar, 10).Value = transId;
-                    cmd2.Parameters.Add("@emplId", SqlDbType.NVarChar, 10).Value = rdr["EMPLID"];
-                    cmd2.Parameters.Add("@typeElement", SqlDbType.Int).Value = 1;
-                    cmd2.CommandType = CommandType.StoredProcedure;
-                    qrdr = cmd2.ExecuteReader();
-
-                    while (qrdr.Read())
-                    {
-                        myPhrase = new Phrase(Convert.ToString(qrdr["CONCEPT"]), myfont1);
-                        cell = new PdfPCell(myPhrase); cell.BorderWidth = 0;
+                        // Encabezado deducciones
+                        myPhrase = new Phrase("DEDUCCIONES", myfont1);
+                        cell = new PdfPCell(myPhrase); cell.BorderWidth = 0; cell.BorderWidthBottom = 0.5f;
                         table3.AddCell(cell);
-                        myPhrase = new Phrase(Convert.ToString(decimal.Round(Convert.ToDecimal(qrdr["AMOUNT"]), 2).ToString("###,###.00")), myfont1);
-                        cell = new PdfPCell(myPhrase); cell.HorizontalAlignment = Element.ALIGN_RIGHT; cell.BorderWidth = 0;
+                        myPhrase = new Phrase("MONTO", myfont1);
+                        cell = new PdfPCell(myPhrase); cell.HorizontalAlignment = Element.ALIGN_RIGHT; cell.BorderWidth = 0; cell.BorderWidthBottom = 0.5f;
                         table3.AddCell(cell);
 
+                        // Obetencion de datos - deducciones
+                        cmd2 = new SqlCommand("dbo.TransReceipt", conn);
+                        cmd2.Parameters.Add("@transId", SqlDbType.NVarChar, 10).Value = transId;
+                        cmd2.Parameters.Add("@emplId", SqlDbType.NVarChar, 10).Value = rdr["EMPLID"];
+                        cmd2.Parameters.Add("@typeElement", SqlDbType.Int).Value = 1;
+                        cmd2.CommandType = CommandType.StoredProcedure;
+                        qrdr = cmd2.ExecuteReader();
+
+                        while (qrdr.Read())
+                        {
+                            myPhrase = new Phrase(Convert.ToString(qrdr["CONCEPT"]), myfont1);
+                            cell = new PdfPCell(myPhrase); cell.BorderWidth = 0;
+                            table3.AddCell(cell);
+                            myPhrase = new Phrase(Convert.ToString(decimal.Round(Convert.ToDecimal(qrdr["AMOUNT"]), 2).ToString("###,###.00")), myfont1);
+                            cell = new PdfPCell(myPhrase); cell.HorizontalAlignment = Element.ALIGN_RIGHT; cell.BorderWidth = 0;
+                            table3.AddCell(cell);
+
+                        }
+                        qrdr.Close();
+
+                        cell = new PdfPCell(table2);
+                        cell.BorderWidth = 0;
+                        table.AddCell(cell);
+                        cell = new PdfPCell();
+                        cell.BorderWidth = 0;
+                        table.AddCell(cell);
+                        cell = new PdfPCell(table3);
+                        cell.BorderWidth = 0;
+                        table.AddCell(cell);
+
+                        // Totales
+                        cell = new PdfPCell(new Phrase(Convert.ToString(decimal.Round(Convert.ToDecimal(rdr["REVENUE"]), 2).ToString("###,###.00")), myfont1));
+                        cell.BorderWidth = 0; cell.HorizontalAlignment = Element.ALIGN_RIGHT; cell.BorderWidthTop = 0.5f;
+                        table.AddCell(cell);
+                        cell = new PdfPCell();
+                        cell.BorderWidth = 0;
+                        table.AddCell(cell);
+                        cell = new PdfPCell(new Phrase(Convert.ToString(decimal.Round(Convert.ToDecimal(rdr["DEDUCTION"]), 2).ToString("###,###.00")), myfont1));
+                        cell.BorderWidth = 0; cell.HorizontalAlignment = Element.ALIGN_RIGHT; cell.BorderWidthTop = 0.5f;
+                        table.AddCell(cell);
+
+                        document.Add(table);
+                        ////////////////////////// TABLA DATOS /////////////////////////////
+
+
+                        cell2 = new PdfPCell();
+                        cell2.BorderWidth = 0;
+                        iTextSharp.text.pdf.PdfPTable tableFoot = new PdfPTable(1);
+                        tableFoot.TotalWidth = document.PageSize.Width - 80;
+                        tableFoot.SetWidths(new Single[] { 3.0F });
+                        tableFoot.LockedWidth = true;
+
+                        myParagraph = new Paragraph();
+                        myPhrase = new Phrase("Guatemala, " + DateTime.Now.Day.ToString() + " de " + DateTime.Now.ToString("MMMM") + " de " + DateTime.Now.Year.ToString(), myfont1);
+                        myParagraph.Alignment = Element.ALIGN_LEFT;
+                        myParagraph.Add(myPhrase); myParagraph.Leading = 24f;
+                        cell2.AddElement(myParagraph);
+
+
+                        myParagraph = new Paragraph();
+                        myPhrase = new Phrase("Elaborado por:                                                          Verificado por:                                                            Autorizado por:", myfont1);
+                        myParagraph.Alignment = Element.ALIGN_LEFT;
+                        myParagraph.Add(myPhrase); myParagraph.Leading = 30f;
+                        cell2.AddElement(myParagraph);
+
+
+                        myParagraph = new Paragraph();
+                        myPhrase = new Phrase("Recibo de conformidad, el importe neto indicado, el cual cubre", new iTextSharp.text.Font(FontFactory.GetFont(FontFactory.HELVETICA, 6, iTextSharp.text.Font.NORMAL)));
+                        myParagraph.Alignment = Element.ALIGN_LEFT;
+                        myParagraph.Add(myPhrase); //myParagraph.Leading = 30f;                    
+                        cell2.AddElement(myParagraph);
+
+                        myParagraph = new Paragraph();
+                        myPhrase = new Phrase("la totalidad de los servicios prestados durante el periodo.", new iTextSharp.text.Font(FontFactory.GetFont(FontFactory.HELVETICA, 6, iTextSharp.text.Font.NORMAL)));
+                        myParagraph.Alignment = Element.ALIGN_LEFT;
+                        myParagraph.Add(myPhrase); myParagraph.Leading = 7f;
+                        cell2.AddElement(myParagraph);
+
+                        /*myParagraph = new Paragraph();
+                        myPhrase = new Phrase("                                                                                    Recibí Conforme  ___________________________________", new iTextSharp.text.Font(FontFactory.GetFont(FontFactory.HELVETICA, 10, iTextSharp.text.Font.NORMAL)));
+                        myParagraph.Alignment = Element.ALIGN_LEFT;
+                        myParagraph.Add(myPhrase); myParagraph.Leading = 30f;
+                        cell2.AddElement(myParagraph);*/
+
+                        tableFoot.AddCell(cell2);
+                        document.Add(tableFoot);
+
+
+                        iTextSharp.text.Image lineaF = iTextSharp.text.Image.GetInstance(@"C:\CS\Img\lineaFirma.png");
+                        lineaF.SetAbsolutePosition((document.PageSize.Width - Convert.ToInt16(lineaF.Width * 0.66)) - 50, 40);
+                        lineaF.ScalePercent(66);
+                        cb.AddImage(lineaF);
+
+                        myParagraph = new Paragraph();
+                        document.Add(myParagraph);
+                        myParagraph.Clear();
+                        cb.EndLayer();
+                        document.Close();
+                        arch = inStream.GetBuffer();
+
+                        WSExpediente.Service ser = new WSExpediente.Service();
+                        string fileName = sequencialMonth + "-" + rdr["PICTUREID"] + "-" + DateTime.Now.ToString("ddMMyyyy") + "-0.pdf";
+                        if (validaExisteBoleta(sequencialMonth, rdr["PICTUREID"].ToString()) && Convert.ToDecimal(rdr["LIQUID"]) > 0)
+                        {
+                            contador++;
+                            ser.Guardar("PR", 35, fileName, "application/pdf", arch, "DBAFISICC");
+                            //File.WriteAllBytes(@"c:\\prueba\"+fileName, arch);
+
+                        }
+                        inStream.Dispose();
                     }
-                    qrdr.Close();
-
-                    cell = new PdfPCell(table2);
-                    cell.BorderWidth = 0;
-                    table.AddCell(cell);
-                    cell = new PdfPCell();
-                    cell.BorderWidth = 0;
-                    table.AddCell(cell);
-                    cell = new PdfPCell(table3);
-                    cell.BorderWidth = 0;
-                    table.AddCell(cell);
-
-                    // Totales
-                    cell = new PdfPCell(new Phrase(Convert.ToString(decimal.Round(Convert.ToDecimal(rdr["REVENUE"]), 2).ToString("###,###.00")), myfont1));
-                    cell.BorderWidth = 0; cell.HorizontalAlignment = Element.ALIGN_RIGHT; cell.BorderWidthTop = 0.5f;
-                    table.AddCell(cell);
-                    cell = new PdfPCell();
-                    cell.BorderWidth = 0;
-                    table.AddCell(cell);
-                    cell = new PdfPCell(new Phrase(Convert.ToString(decimal.Round(Convert.ToDecimal(rdr["DEDUCTION"]), 2).ToString("###,###.00")), myfont1));
-                    cell.BorderWidth = 0; cell.HorizontalAlignment = Element.ALIGN_RIGHT; cell.BorderWidthTop = 0.5f;
-                    table.AddCell(cell);
-
-                    document.Add(table);
-                    ////////////////////////// TABLA DATOS /////////////////////////////
-
-
-                    cell2 = new PdfPCell();
-                    cell2.BorderWidth = 0;
-                    iTextSharp.text.pdf.PdfPTable tableFoot = new PdfPTable(1);
-                    tableFoot.TotalWidth = document.PageSize.Width - 80;
-                    tableFoot.SetWidths(new Single[] { 3.0F });
-                    tableFoot.LockedWidth = true;
-
-                    myParagraph = new Paragraph();
-                    myPhrase = new Phrase("Guatemala, " + DateTime.Now.Day.ToString() + " de " + DateTime.Now.ToString("MMMM") + " de " + DateTime.Now.Year.ToString(), myfont1);
-                    myParagraph.Alignment = Element.ALIGN_LEFT;
-                    myParagraph.Add(myPhrase); myParagraph.Leading = 24f;
-                    cell2.AddElement(myParagraph);
-
-
-                    myParagraph = new Paragraph();
-                    myPhrase = new Phrase("Elaborado por:                                                          Verificado por:                                                            Autorizado por:", myfont1);
-                    myParagraph.Alignment = Element.ALIGN_LEFT;
-                    myParagraph.Add(myPhrase); myParagraph.Leading = 30f;
-                    cell2.AddElement(myParagraph);
-
-
-                    myParagraph = new Paragraph();
-                    myPhrase = new Phrase("Recibo de conformidad, el importe neto indicado, el cual cubre", new iTextSharp.text.Font(FontFactory.GetFont(FontFactory.HELVETICA, 6, iTextSharp.text.Font.NORMAL)));
-                    myParagraph.Alignment = Element.ALIGN_LEFT;
-                    myParagraph.Add(myPhrase); //myParagraph.Leading = 30f;                    
-                    cell2.AddElement(myParagraph);
-
-                    myParagraph = new Paragraph();
-                    myPhrase = new Phrase("la totalidad de los servicios prestados durante el periodo.", new iTextSharp.text.Font(FontFactory.GetFont(FontFactory.HELVETICA, 6, iTextSharp.text.Font.NORMAL)));
-                    myParagraph.Alignment = Element.ALIGN_LEFT;
-                    myParagraph.Add(myPhrase); myParagraph.Leading = 7f;
-                    cell2.AddElement(myParagraph);
-
-                    /*myParagraph = new Paragraph();
-                    myPhrase = new Phrase("                                                                                    Recibí Conforme  ___________________________________", new iTextSharp.text.Font(FontFactory.GetFont(FontFactory.HELVETICA, 10, iTextSharp.text.Font.NORMAL)));
-                    myParagraph.Alignment = Element.ALIGN_LEFT;
-                    myParagraph.Add(myPhrase); myParagraph.Leading = 30f;
-                    cell2.AddElement(myParagraph);*/
-
-                    tableFoot.AddCell(cell2);
-                    document.Add(tableFoot);
-
-
-                    iTextSharp.text.Image lineaF = iTextSharp.text.Image.GetInstance(@"C:\CS\Img\lineaFirma.png");
-                    lineaF.SetAbsolutePosition((document.PageSize.Width - Convert.ToInt16(lineaF.Width * 0.66)) - 50, 40);
-                    lineaF.ScalePercent(66);
-                    cb.AddImage(lineaF);
-
-                    myParagraph = new Paragraph();
-                    document.Add(myParagraph);
-                    myParagraph.Clear();
-                    cb.EndLayer();
-                    document.Close();
-                    arch = inStream.GetBuffer();
-
-                    WSExpediente.Service ser = new WSExpediente.Service();
-                    string fileName = sequencialMonth + "-" + rdr["PICTUREID"] + "-" + DateTime.Now.ToString("ddMMyyyy") + "-0.pdf";
-                    if (validaExisteBoleta(sequencialMonth, rdr["PICTUREID"].ToString()) && Convert.ToDecimal(rdr["LIQUID"]) > 0)
-                    {
-                        ser.Guardar("PR", 35, fileName, "application/pdf", arch, "DBAFISICC");
-                        //File.WriteAllBytes(@"c:\\prueba\"+fileName, arch);
-                        contador++;
-                    }
-                    inStream.Dispose();
                 }
             }
             catch (Exception ex)
@@ -624,12 +631,12 @@ public class WSReceiptsGeneration : System.Web.Services.WebService
                     string fileName = sequencialMonth + "-" + rdr["PICTUREID"] + "-" + DateTime.Now.ToString("ddMMyyyy") + "-0.pdf";
                     if (validaExisteBoleta(sequencialMonth, rdr["PICTUREID"].ToString()) && Convert.ToDecimal(rdr["ADVANCE"]) > 0)
                     {
-                        ser.Guardar("PR", 35, fileName, "application/pdf", arch, "DBAFISICC");
-                        //File.WriteAllBytes(@"c:\\prueba\"+fileName, arch);
                         contador++;
+                        ser.Guardar("PR", 35, fileName, "application/pdf", arch, "DBAFISICC");
+                        //File.WriteAllBytes(@"c:\\prueba\"+fileName, arch);                        
                     }
                     inStream.Dispose();
-                }
+                }            
             }
             catch (Exception ex)
             {
