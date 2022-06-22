@@ -363,12 +363,13 @@ public class WSReceiptsGeneration : System.Web.Services.WebService
                         document.Close();
                         arch = inStream.GetBuffer();
 
-                        WSExpediente.Service ser = new WSExpediente.Service();
+                        //WSExpediente.Service ser = new WSExpediente.Service();
+                        WSTrans.WSTransition ser = new WSTrans.WSTransition();
                         string fileName = sequencialMonth + "-" + rdr["PICTUREID"] + "-" + DateTime.Now.ToString("ddMMyyyy") + "-0.pdf";
                         if (validaExisteBoleta(sequencialMonth, rdr["PICTUREID"].ToString()) && Convert.ToDecimal(rdr["LIQUID"]) > 0)
                         {
                             contador++;
-                            ser.Guardar("PR", 35, fileName, "application/pdf", arch, "DBAFISICC");
+                            ser.GuardarArchivoAsync("PR", "35", fileName, "application/pdf", Convert.ToBase64String(arch), "DBAFISICC");
                             //File.WriteAllBytes(@"c:\\prueba\"+fileName, arch);
 
                         }
@@ -398,6 +399,8 @@ public class WSReceiptsGeneration : System.Web.Services.WebService
         string sequencialMonth;
         Axapta ax = new Axapta();
         string[] ParmsClass = new string[2];
+        string err = "";
+        string flnm = "";
 
         conn.Open();
         SqlCommand cmd = new SqlCommand("dbo.PayRollAdvanceReceipt_Head", conn);
@@ -627,12 +630,14 @@ public class WSReceiptsGeneration : System.Web.Services.WebService
                     document.Close();
                     arch = inStream.GetBuffer();
 
-                    WSExpediente.Service ser = new WSExpediente.Service();
+                    //WSExpediente.Service ser = new WSExpediente.Service();
+                    WSTrans.WSTransition ser = new WSTrans.WSTransition();
                     string fileName = sequencialMonth + "-" + rdr["PICTUREID"] + "-" + DateTime.Now.ToString("ddMMyyyy") + "-0.pdf";
+                    flnm = fileName;
                     if (validaExisteBoleta(sequencialMonth, rdr["PICTUREID"].ToString()) && Convert.ToDecimal(rdr["ADVANCE"]) > 0)
                     {
                         contador++;
-                        ser.Guardar("PR", 35, fileName, "application/pdf", arch, "DBAFISICC");
+                        ser.GuardarArchivoAsync("PR", "35", fileName, "application/pdf", Convert.ToBase64String(arch), "DBAFISICC");
                         //File.WriteAllBytes(@"c:\\prueba\"+fileName, arch);                        
                     }
                     inStream.Dispose();
@@ -640,13 +645,16 @@ public class WSReceiptsGeneration : System.Web.Services.WebService
             }
             catch (Exception ex)
             {
-                System.Web.HttpContext.Current.Response.Write(ex.Message);
+                //System.Web.HttpContext.Current.Response.Write(ex.Message);
+                err += ex.Message + "("+ flnm + ");";
             }
             //break;
         }
         rdr.Close();
-
-        return "Cantidad de boletas generadas: " + contador.ToString();
+        if (err != String.Empty)
+            return err;
+        else
+            return "Cantidad de boletas generadas: " + contador.ToString();
     }
 
 
@@ -667,7 +675,7 @@ public class WSReceiptsGeneration : System.Web.Services.WebService
         cmd.CommandType = CommandType.StoredProcedure;
         SqlDataReader rdr = cmd.ExecuteReader();
 
-        while (rdr.Read())
+        while (rdr.Read())  
         {
             Document document = new Document(new iTextSharp.text.Rectangle(612f, 396.27f));
             document.SetMargins(40, 40, 40, 5);
@@ -922,11 +930,12 @@ public class WSReceiptsGeneration : System.Web.Services.WebService
                 document.Close();
                 arch = inStream.GetBuffer();
 
-                WSExpediente.Service ser = new WSExpediente.Service();
+                //WSExpediente.Service ser = new WSExpediente.Service();
+                WSTrans.WSTransition ser = new WSTrans.WSTransition();
                 string fileName = sequencialMonth + "-" + rdr["PICTUREID"] + "-" + DateTime.Now.ToString("ddMMyyyy") + "-0.pdf";
                 if (validaExisteBoleta(sequencialMonth, rdr["PICTUREID"].ToString()) && Convert.ToDecimal(rdr["LIQUID"]) > 0)
                 {
-                    ser.Guardar("PR", 35, fileName, "application/pdf", arch, "DBAFISICC");
+                    ser.GuardarArchivoAsync("PR", "35", fileName, "application/pdf", Convert.ToBase64String(arch), "DBAFISICC");
                     //File.WriteAllBytes(@"c:\\prueba\"+fileName, arch);
                     contador++;
                 }
@@ -1181,11 +1190,12 @@ public class WSReceiptsGeneration : System.Web.Services.WebService
                 document.Close();
                 arch = inStream.GetBuffer();
 
-                WSExpediente.Service ser = new WSExpediente.Service();
+                //WSExpediente.Service ser = new WSExpediente.Service();
+                WSTrans.WSTransition ser = new WSTrans.WSTransition();
                 string fileName = sequencialMonth + "-" + rdr["PICTUREID"] + "-" + DateTime.Now.ToString("ddMMyyyy") + "-0.pdf";
                 if (validaExisteBoleta(sequencialMonth, rdr["PICTUREID"].ToString()) && Convert.ToDecimal(rdr["ADVANCE"]) > 0)
                 {
-                    ser.Guardar("PR", 35, fileName, "application/pdf", arch, "DBAFISICC");
+                    ser.GuardarArchivoAsync("PR", "35", fileName, "application/pdf", Convert.ToBase64String(arch), "DBAFISICC");
                     //File.WriteAllBytes(@"c:\\prueba\"+fileName, arch);
                     contador++;
                 }
@@ -1302,17 +1312,18 @@ public class WSReceiptsGeneration : System.Web.Services.WebService
     public bool validaExisteBoleta(string boleta, string persona)
     {
         WSExpediente.Service ser = new WSExpediente.Service();
-        WSExpediente.Etiquetas[] et = new WSExpediente.Etiquetas[2];
-        WSExpediente.Etiquetas arch = new WSExpediente.Etiquetas();
+        List<Etiquetas> et = new List<Etiquetas>();
+        Etiquetas arch = new Etiquetas();
         arch.Etiqueta = 18;
         arch.Valor = boleta;
-        et[0] = arch;
-        arch = new WSExpediente.Etiquetas();
+        et.Add(arch);
+        arch = new Etiquetas();
         arch.Etiqueta = 24;
         arch.Valor = persona;
-        et[1] = arch;
+        et.Add(arch);
         DataSet dsNew = new DataSet();
-        dsNew = ser.ObtenerArchivos("PR", 35, et);
+        //dsNew = ser.ObtenerArchivos("PR", 35, et);
+        dsNew = ObtenerArchivos("PR", 35, et);
 
         if (dsNew.Tables[0].Rows.Count == 0)
             return true;
@@ -1325,22 +1336,64 @@ public class WSReceiptsGeneration : System.Web.Services.WebService
     public bool validaExisteBoletaTest(string boleta, string persona)
     {
         WSExpediente.Service ser = new WSExpediente.Service();
-        WSExpediente.Etiquetas[] et = new WSExpediente.Etiquetas[2];
-        WSExpediente.Etiquetas arch = new WSExpediente.Etiquetas();
+        List<Etiquetas> et = new List<Etiquetas>();
+        Etiquetas arch = new Etiquetas();
         arch.Etiqueta = 18;
         arch.Valor = boleta;
-        et[0] = arch;
-        arch = new WSExpediente.Etiquetas();
+        et.Add(arch);
+        arch = new Etiquetas();
         arch.Etiqueta = 24;
         arch.Valor = persona;
-        et[1] = arch;
+        et.Add(arch);
         DataSet dsNew = new DataSet();
-        dsNew = ser.ObtenerArchivos("PR", 35, et);
+        //dsNew = ser.ObtenerArchivos("PR", 35, et);
+        dsNew = ObtenerArchivos("PR", 35, et);
 
         if (dsNew.Tables[0].Rows.Count == 0)
             return true;
         else
             return false;
+    }
+
+
+    public DataSet ObtenerArchivos(string Aplicacion, int categoria, List<Etiquetas> ListaEtiquetas)
+    {
+        DataSet ds = new DataSet();
+        string sql = "SELECT distinct tmp.idarchivo, 0 CONTEO, tmp.CAJA, tmp.nombreapp,tmp.nombrecat,tmp.aplicacion,tmp.categoria, tmp.nombre, tmp.usuario,tmp.extension,tmp.fecha, tmp.automatizado ";
+        sql += " FROM DBAFISICC.DGARCHIVOSVALIDOS tmp WHERE tmp.IDARCHIVO IN ( ";
+        int contar = 0;
+        foreach (Etiquetas tag in ListaEtiquetas)
+        {
+            if (contar > 0)
+            {
+                sql += " AND a.IDARCHIVO IN ( ";
+            }
+
+            sql += "SELECT IDARCHIVO FROM DBAFISICC.DGARCHIVOSVALIDOS a ";
+            sql += "WHERE a.APLICACION = :APLICACION AND a.CATEGORIA = :CATEGORIA ";
+            sql += "AND a.ETIQUETA=" + tag.Etiqueta + " AND a.VALOR='" + tag.Valor + "' ";
+            contar++;
+        }
+        for (int i = 0; i < contar; i++)
+        {
+            sql += " ) ";
+        }
+        sql += " and tmp.APLICACION=:APLICACION AND tmp.CATEGORIA=:CATEGORIA ";
+        sql += " ORDER BY TMP.NOMBRE DESC";
+        //instancia variables
+        OracleCommand cmd = new OracleCommand(sql, cn);
+        cmd.BindByName = true;
+
+        cmd.Parameters.Add(":APLICACION", OracleDbType.Varchar2, 2);
+        cmd.Parameters.Add(":CATEGORIA", OracleDbType.Decimal);
+
+        cmd.Parameters[":APLICACION"].Value = Aplicacion;
+        cmd.Parameters[":CATEGORIA"].Value = categoria;
+        OracleDataAdapter da = new OracleDataAdapter(cmd);
+        da.Fill(ds, "DGARCHIVOSVALIDOS");
+        return ds;
+
+
     }
 
 
@@ -1432,4 +1485,44 @@ public class WSReceiptsGeneration : System.Web.Services.WebService
         return Num2Text;
     }
 
+}
+
+public class Etiquetas
+{
+    private short etiqueta;
+    private string valor;
+
+    public Etiquetas()
+    {
+    }
+
+    public Etiquetas(short Etiqueta, string Valor)
+    {
+        etiqueta = Etiqueta;
+        valor = Valor;
+    }
+
+    public short Etiqueta
+    {
+        get
+        {
+            return etiqueta;
+        }
+        set
+        {
+            etiqueta = value;
+        }
+    }
+
+    public string Valor
+    {
+        get
+        {
+            return valor;
+        }
+        set
+        {
+            valor = value;
+        }
+    }
 }

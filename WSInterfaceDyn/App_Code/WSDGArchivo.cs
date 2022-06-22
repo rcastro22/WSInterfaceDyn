@@ -38,6 +38,7 @@ public class WSDGArchivo : System.Web.Services.WebService
 
     [WebMethod(Description = "Obtiene el id encriptado del arhcivo", EnableSession = false)]
     // 12-04-2020, RC, Obtiene el id encriptado del arhcivo
+    // 21-06-2022, RC, Metodo obsoleto pues se consulta directaente en el api DG de dynamics
     public string obtenerIdArchivo(string _application, int _category, string _labels)
     {
         char[] separador = { '&' };
