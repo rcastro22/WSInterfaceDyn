@@ -7,6 +7,7 @@ using System.Web.Services;
 
 /// <summary>
 /// Descripción breve de WSDGArchivo
+/// ATENCION!!!!!: Este WS queda en desuso, ya que en el servicio de Dynamics se busca el id a travez del servicio de DG
 /// </summary>
 [WebService(Namespace = "http://tempuri.org/")]
 [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]

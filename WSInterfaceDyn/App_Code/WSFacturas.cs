@@ -107,27 +107,51 @@ public class WSFacturas : System.Web.Services.WebService
 
     [WebMethod(Description = "Valida que la factura no exista en Dynamics por NIT", EnableSession = false)]
     // 07-04-2020, Roberto Castro, Valida que la factura no exista en Dynamics
-    public bool validarFacturaNit(string _nit, string _facturaserie, string _facturanumero)
+    public string validarFacturaNit(string _nit, string _facturaserie, string _facturanumero)
     {
-        bool ret;
+        string ret;
         Axapta ax = new Axapta();
         try
         {
             AxaptaRecord axRecord;
+            AxaptaRecord axRecord2;
+            AxaptaRecord axRecord3;
+            AxaptaRecord axRecord4;
+            AxaptaRecord axRecord5;
             string tableName = "vendInvoiceJour";
-            string strQuery = String.Format("select InvoiceDate,InvoiceAmount from %1 index hint InvoiceIdx where %1.VATNum == '{0}' && %1.InvoiceId == '{1}-{2}' && %1.InvoiceAmount != 0", _nit, _facturaserie, _facturanumero);
+            string tableName2 = "TaxTrans";
+            string tableName3 = "TaxWithholdTicket";
+            string tableName4 = "IEmplVendCodeRefTable";
+            string tableName5 = "VendTable";
+            string strQuery = String.Format(@"
+    select InvoiceDate,InvoiceAmount, InvoiceAccount 
+    from %1 index hint InvoiceIdx 
+    where %1.VATNum like strreplace('{0}','-','*') && %1.InvoiceId == '{1}-{2}' && %1.InvoiceAmount != 0 
+    join %2
+    where %2.Voucher == %1.LedgerVoucher
+    && %2.TaxCode == 'EXEN-IVA'
+    join %3
+    where %2.WithholdTicket == %3.WithholdTicket 
+    outer join %4
+    where %4.VendAccount == %1.InvoiceAccount 
+    join %5
+    where %5.AccountNum == %1.InvoiceAccount", _nit, _facturaserie, _facturanumero);
 
             ax.Logon(null, null, null, null);
             ax.TTSBegin();
             axRecord = ax.CreateAxaptaRecord(tableName);
-            axRecord.ExecuteStmt(strQuery);
+            axRecord2 = ax.CreateAxaptaRecord(tableName2);
+            axRecord3 = ax.CreateAxaptaRecord(tableName3);
+            axRecord4 = ax.CreateAxaptaRecord(tableName4);
+            axRecord5 = ax.CreateAxaptaRecord(tableName5);
+            ax.ExecuteStmt(strQuery,axRecord, axRecord2, axRecord3, axRecord4, axRecord5);
             if (axRecord.Found)
             {
-                ret = true;
+                ret = axRecord3.get_Field("WITHHOLDTICKET").ToString()+"$"+ axRecord.get_Field("INVOICEACCOUNT").ToString() + "$" + axRecord4.get_Field("IEMPLIDUGA").ToString() + "$" + axRecord5.get_Field("NAME").ToString();
             }
             else
             {
-                ret = false;
+                ret = "";
             }
 
             ax.TTSCommit();
@@ -139,7 +163,7 @@ public class WSFacturas : System.Web.Services.WebService
         {
             ax.TTSAbort();
             ax.Logoff();
-            return false;
+            return "";
         }
     }
 
@@ -242,6 +266,46 @@ public class WSFacturas : System.Web.Services.WebService
             return false;
         }
     }
+
+
+    [WebMethod(Description = "Agrega las exenciones de ISR a Dynamics", EnableSession = false)]
+    // 28-06-2022, Roberto Castro, Agrega las exenciones de ISR a Dynamics
+    public string agregarExension(string _autorizacion, string _refInterna, string _fechaAutorizacion, string _nit, string _facturaSerie, string _facturaNumero)
+    {
+        Axapta ax = new Axapta();
+        string ret = "";
+        try
+        {
+            string[] ParmsClass = new string[6];
+            ax.Logon(null, null, null, null);
+            ParmsClass[0] = Convert.ToString(_autorizacion);
+            ParmsClass[1] = Convert.ToString(_refInterna);
+            ParmsClass[2] = Convert.ToString(_fechaAutorizacion);
+            ParmsClass[3] = Convert.ToString(_nit);
+            ParmsClass[4] = Convert.ToString(_facturaSerie);
+            ParmsClass[5] = Convert.ToString(_facturaNumero);
+            ret = ax.CallStaticClassMethod("WSInterface", "newWithholdTiket", ParmsClass).ToString();
+            ax.Logoff();
+            
+            if(ret == "ok")
+            {
+                return "correcto";
+            }
+            else
+            {
+                throw new System.Exception(ret);
+            }
+        }
+        catch (Exception e)
+        {
+            ax.Logoff();
+            //return e.Message;
+            throw new System.Exception(e.Message.Replace("\u001a", "").Replace("\n", " "));
+            //string err = e.Message.Replace("\u001a", "").Replace("\n", " ");
+            //return err;
+        }
+    }
+
 
     [WebMethod(Description = "Retorna la informacion de Pagos por porfacturación", EnableSession = false)]
     // 18-06-2021, Roberto Castro, Retorna la informacion de Pagos por porfacturación
