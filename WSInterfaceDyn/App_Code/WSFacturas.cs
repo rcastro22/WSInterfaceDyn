@@ -109,6 +109,12 @@ public class WSFacturas : System.Web.Services.WebService
     // 07-04-2020, Roberto Castro, Valida que la factura no exista en Dynamics
     public string validarFacturaNit(string _nit, string _facturaserie, string _facturanumero)
     {
+        /////////// EXCEPCION 1 //////////
+        /// 03-11-2022, RC ///
+        if (_nit.Replace("-","") == "74382489" && _facturaserie == "EE243C3F" && _facturanumero == "888687363")
+            _facturanumero = "0888687363";
+        //////////////////////////////////
+
         string ret;
         Axapta ax = new Axapta();
         try

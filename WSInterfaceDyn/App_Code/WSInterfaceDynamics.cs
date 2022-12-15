@@ -67,10 +67,10 @@ public class WSInterfaceDynamics : System.Web.Services.WebService
             // Recorre los registros del DataSet
             foreach (DataRow row in ds.Tables[0].Rows)
             {
-                if (row.ItemArray.Length == 7)
+                if (row.ItemArray.Length == 9)
                 {
                     col += "\n";
-                    string CareerId, Description, DirectoName, dim1, dim2, CareerPrincipal, Sede, Status;
+                    string CareerId, Description, DirectoName, dim1, dim2, CareerPrincipal, Sede, Status, Programa, Institucion;
                     CareerId = Convert.ToString(row[0]);
                     Description = Convert.ToString(row[1]);
                     DirectoName = Convert.ToString(row[2]);
@@ -78,6 +78,8 @@ public class WSInterfaceDynamics : System.Web.Services.WebService
                     CareerPrincipal = Convert.ToString(row[4]);
                     Sede = Convert.ToString(row[5]);
                     Status = Convert.ToString(row[6]);
+                    Programa = Convert.ToString(row[7]);
+                    Institucion = Convert.ToString(row[8]);
                     if (dim2.Length >= 6)
                     {
                         dim1 = dim2.Substring(0, 3);
@@ -97,6 +99,8 @@ public class WSInterfaceDynamics : System.Web.Services.WebService
                     axRecord.set_Field("PRINCIPALCAREER", CareerPrincipal);
                     axRecord.set_Field("STATUS", (Status == "A" ? "Activo" : "Inactivo"));
                     axRecord.set_Field("SEDE", Sede);
+                    axRecord.set_Field("PROGRAMA", Programa);
+                    axRecord.set_Field("INSTITUCION", Institucion);
 
                     // Inserta el registro en Dynamics
                     axRecord.Insert();
